@@ -1,0 +1,11 @@
+.DS_Store
+.env
+.env.*
+*.pem
+*.key
+*-keypair.json
+node_modules/
+target/
+dist/
+coverage/
+.tooling/
