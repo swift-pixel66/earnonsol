@@ -14,13 +14,18 @@
 * { box-sizing: border-box; }
 body { margin: 0; }
 a { color: inherit; text-underline-offset: 0.25em; }
+a:focus-visible { outline: 3px solid #466c36; outline-offset: 5px; border-radius: 4px; }
+a:hover { text-decoration: underline; }
+:target { scroll-margin-top: 24px; }
+.skip-link { position: fixed; z-index: 10; top: 12px; left: 12px; padding: 14px 20px; background: var(--ink); color: white; transform: translateY(-180%); }
+.skip-link:focus { transform: translateY(0); }
 p, h1, h2, h3 { margin: 0; }
 .page-width { width: min(1184px, calc(100% - 64px)); margin-inline: auto; }
 .site-header { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding-block: 30px; }
 .brand { display: flex; align-items: baseline; gap: 10px; font-size: 29px; font-weight: 800; letter-spacing: -1.5px; text-decoration: none; }
 .brand span { font-size: 12px; font-weight: 500; letter-spacing: 0; color: var(--muted); }
 nav { display: flex; align-items: center; flex-wrap: wrap; gap: 26px; font-size: 13px; }
-nav a { text-decoration: none; }
+nav a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; }
 .repository-link { border: 1px solid var(--line); border-radius: 30px; padding: 10px 17px; }
 .hero { display: grid; grid-template-columns: 1.35fr 1fr; gap: 64px; align-items: center; padding-block: 70px 100px; }
 .eyebrow { display: flex; align-items: center; gap: 9px; color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
@@ -45,11 +50,11 @@ h2 { font-size: 25px; font-weight: 500; letter-spacing: -0.04em; }
 .card-number { color: var(--muted); font-size: 10px; letter-spacing: 0.12em; }
 h3 { margin-top: 30px; font-size: 24px; font-weight: 500; letter-spacing: -0.035em; }
 .project-card p { max-width: 430px; margin-top: 15px; color: var(--muted); font-size: 14px; line-height: 1.7; }
-.project-card a { display: inline-block; margin-top: 28px; font-size: 13px; }
+.project-card a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; margin-top: 16px; font-size: 13px; }
 .architecture-note { display: flex; align-items: center; justify-content: space-between; gap: 36px; padding: 36px; margin-block: 24px 68px; border-radius: 14px; background: #e8eee0; }
 .architecture-note h2 { margin-top: 14px; font-size: 23px; }
 .architecture-note p:not(.eyebrow) { max-width: 640px; margin-top: 12px; color: var(--muted); font-size: 13px; line-height: 1.7; }
-.architecture-note > a { flex-shrink: 0; font-size: 13px; }
+.architecture-note > a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; flex-shrink: 0; font-size: 13px; }
 .site-footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; padding-block: 25px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; }
 .site-footer span { padding-inline: 8px; }
 
@@ -65,4 +70,20 @@ h3 { margin-top: 30px; font-size: 24px; font-weight: 500; letter-spacing: -0.035
   nav { gap: 20px; }
   .project-grid { grid-template-columns: 1fr; }
   .project-card, .architecture-note { padding: 24px; }
+  .hero { padding-top: 28px; }
+  h1 { font-size: clamp(40px, 10vw, 56px); }
+  .section-heading { gap: 12px; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .primary-link, .repository-link { transition: background-color 160ms ease, color 160ms ease; }
+}
+
+@media (hover: hover) {
+  .primary-link:hover { background: #2b5140; }
+  .repository-link:hover { background: #e8eee0; }
+}
+
+@media (forced-colors: active) {
+  .primary-link, .skip-link { border: 1px solid ButtonText; }
 }
