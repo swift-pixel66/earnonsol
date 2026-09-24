@@ -1,13 +1,15 @@
 # Website
 
-Static HTML and CSS for the EARN on Solana landing page. The first page is being built in this directory.
+Static HTML and CSS for an independent EARN on Solana landing page. The page links to both source directories and the current system architecture.
 
 ## Local preview
 
-Once `index.html` is present, run from the repository root:
+Run from the repository root:
 
 ```sh
 python3 -m http.server 4178 --bind 127.0.0.1 --directory website
 ```
 
 Open <http://127.0.0.1:4178>. No dependencies or build tools are required.
+
+`index.html` contains the content and navigation; `styles.css` contains the layout and visual design. All artwork is drawn in CSS. The page does not connect a wallet or send transactions.
