@@ -16,4 +16,22 @@ The architecture follows the current system map in the [repository README](../RE
 | 01:33 | Networks and authority roles |
 | 01:50 | The independent source examples |
 
-The render will include locally generated narration using the macOS Samantha voice. All diagrams and motion graphics are created from source; no production screenshots or private implementation code are included.
+The narration is generated locally with the macOS Samantha voice. All diagrams and motion graphics are created from source; no production screenshots or private implementation code are included.
+
+## Rebuild
+
+Requirements: macOS with the Samantha voice, Python 3.10 or newer, FFmpeg and FFprobe on `PATH`, and Arial fonts. Pillow is pinned in `requirements.txt`.
+
+From the repository root:
+
+```sh
+python3 -m venv .venv
+.venv/bin/python -m pip install -r video/requirements.txt
+.venv/bin/python video/render.py
+```
+
+The renderer generates a 1280 × 720 MP4 at 24 fps, a separate English SRT, a poster, and a media manifest. English captions are both visible in the picture and included as a selectable subtitle track. Narration timing is aligned to each chapter; intermediate speech files stay in the ignored `video/.build/` directory.
+
+For a quick layout review, use `--stills-only`. Use `--audio-only` to build narration and subtitle timing without encoding video. `--work-dir` and `--output-dir` accept custom directories. Narration tempo is bounded, and overlong text fails layout validation instead of being silently clipped.
+
+The rendering primitives follow the [Pillow ImageDraw API](https://pillow.readthedocs.io/en/stable/reference/ImageDraw.html); audio timing and MP4 encoding use [FFmpeg](https://ffmpeg.org/ffmpeg-filters.html).
