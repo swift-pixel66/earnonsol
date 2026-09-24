@@ -1,5 +1,14 @@
 # Contract
 
-This directory is reserved for a small native Solana program written in Rust.
+An independent native Solana program that initializes a counter and lets its recorded authority increment it. The program stores a version, an authority public key, and a `u64` count in 41 bytes.
 
-The initial example will demonstrate signer authorization and account state updates. It has no deployment or program ID assigned.
+## Development
+
+```sh
+cd contract
+cargo check --locked
+```
+
+The counter account must already be allocated to this program and zero-filled. Initialization requires both the counter and authority to sign. Later increments require the recorded authority's signature. Reinitialization, invalid account ownership, malformed state and integer overflow are rejected.
+
+This example does not implement a vault, accept deposits, or manage liquidity. No on-chain program has been deployed from this directory.
