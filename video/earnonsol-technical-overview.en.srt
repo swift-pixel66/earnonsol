@@ -1,0 +1,107 @@
+1
+00:00:00,450 --> 00:00:03,113
+Here is EARN on Solana in two minutes.
+
+2
+00:00:03,233 --> 00:00:08,386
+We will follow the real system, from the browser to liquidity pools.
+
+3
+00:00:08,506 --> 00:00:13,650
+And separate that architecture from this repository's new example code.
+
+4
+00:00:14,450 --> 00:00:20,544
+The homepage and vault app use React and TypeScript, served through Cloudflare Workers.
+
+5
+00:00:20,664 --> 00:00:24,088
+The user's wallet approves and signs transactions.
+
+6
+00:00:24,208 --> 00:00:30,650
+The Worker provides the RPC gateway, market statistics, and Keeper status.
+
+7
+00:00:31,450 --> 00:00:34,077
+A deposit starts with USDC.
+
+8
+00:00:34,197 --> 00:00:40,071
+The app converts it into the selected asset pair and deposits it in one atomic transaction.
+
+9
+00:00:40,191 --> 00:00:45,495
+The vault program issues shares and manages liquidity through Raydium CLMM.
+
+10
+00:00:45,615 --> 00:00:50,650
+Redemption burns shares and returns the underlying asset plus USDC.
+
+11
+00:00:51,450 --> 00:00:55,936
+Keeper coordination lives in a separate Durable Object for each network and vault.
+
+12
+00:00:56,056 --> 00:01:00,494
+Each vault has one daily strategy slot, in the UTC zero cycle.
+
+13
+00:01:00,614 --> 00:01:03,490
+A signed transaction is journaled and submitted once.
+
+14
+00:01:03,610 --> 00:01:06,703
+Pending signatures are checked every forty-five seconds.
+
+15
+00:01:06,823 --> 00:01:09,933
+Failure or expiry waits for the next daily decision.
+
+16
+00:01:10,053 --> 00:01:14,650
+Fee-only reinvestment requires ten USDC in combined unclaimed fees.
+
+17
+00:01:15,450 --> 00:01:21,186
+RPC traffic uses a primary Helius provider, a standby, and a public endpoint.
+
+18
+00:01:21,306 --> 00:01:25,003
+Read failover never means replaying a submitted Keeper transaction.
+
+19
+00:01:25,123 --> 00:01:27,807
+Homepage market caching is only for display.
+
+20
+00:01:27,927 --> 00:01:32,650
+Accounting and execution use chain state, while idle app pages avoid polling.
+
+21
+00:01:33,450 --> 00:01:37,944
+Mainnet and Devnet share program logic, with separate identities and execution policies.
+
+22
+00:01:38,064 --> 00:01:41,759
+Each network currently publishes six live vaults, and the registry can grow.
+
+23
+00:01:41,879 --> 00:01:46,206
+Management can independently pause deposits, withdrawals, or strategy investment.
+
+24
+00:01:46,326 --> 00:01:49,650
+Compatible upgrades preserve existing program and account identities.
+
+25
+00:01:50,450 --> 00:01:52,516
+The diagram reflects the deployed system.
+
+26
+00:01:52,636 --> 00:01:56,277
+This repository's website and Rust counter are fresh starter examples.
+
+27
+00:01:56,397 --> 00:01:59,650
+Explore the source, tests, and architecture on GitHub.

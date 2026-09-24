@@ -305,10 +305,10 @@ def previews(story, work):
 def render_video(story, work, output, wav, cues):
     destination = output / f"{STEM}.mp4"
     args = ["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{WIDTH}x{HEIGHT}",
-            "-r", str(FPS), "-i", "pipe:0", "-i", str(wav), "-i", str(output / f"{STEM}.en.srt"),
-            "-map", "0:v:0", "-map", "1:a:0", "-map", "2:s:0", "-c:v", "libx264", "-preset", "medium",
-            "-crf", "22", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "128k", "-af", "loudnorm=I=-16:TP=-1.5:LRA=11",
-            "-c:s", "mov_text", "-metadata:s:s:0", "language=eng", "-metadata:s:a:0", "language=eng",
+            "-r", str(FPS), "-i", "pipe:0", "-i", str(wav),
+            "-map", "0:v:0", "-map", "1:a:0", "-c:v", "libx264", "-preset", "medium",
+            "-crf", "22", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "128k", "-ar", str(SAMPLE_RATE),
+            "-af", "loudnorm=I=-16:TP=-1.5:LRA=11", "-metadata:s:a:0", "language=eng",
             "-metadata", f"title={story['title']}", "-movflags", "+faststart", "-t", str(story["durationSeconds"]), str(destination)]
     process = subprocess.Popen(args, stdin=subprocess.PIPE)
     elapsed = 0

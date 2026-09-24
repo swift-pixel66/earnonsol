@@ -1,0 +1,12 @@
+{
+  "durationSeconds": 120.0,
+  "width": 1280,
+  "height": 720,
+  "framesPerSecond": 24,
+  "language": "en",
+  "narration": "macOS Samantha (synthetic)",
+  "subtitleCues": 27,
+  "architectureAsOf": "2026-09-24",
+  "bytes": 3368067,
+  "sha256": "2116f332b1b189a3d64a9be9f45ef97d50db716c52cb9e10329cbc6e145106a3"
+}

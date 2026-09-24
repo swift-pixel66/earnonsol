@@ -1,6 +1,6 @@
 # EARN on Solana
 
-A small, independent starting point for a project website and a native Solana program.
+A fresh website, a native Solana program example, and a technical walkthrough of the current EARN architecture.
 
 | Directory | Purpose |
 | --- | --- |
@@ -9,6 +9,8 @@ A small, independent starting point for a project website and a native Solana pr
 | [`video/`](video/) | A two-minute technical walkthrough of the current system architecture. |
 
 Each directory contains its own development instructions. This repository starts with fresh source and an independent Git history.
+
+[Watch the two-minute technical overview](video/earnonsol-technical-overview.mp4?raw=true) · [English subtitles](video/earnonsol-technical-overview.en.srt)
 
 ## System architecture
 
