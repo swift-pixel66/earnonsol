@@ -71,4 +71,4 @@ flowchart TB
 
 ## Status
 
-Initial development. No website or on-chain program has been deployed from this repository.
+The independent landing page and counter example are implemented. The counter passes 10 host tests and Clippy with warnings denied. No website or on-chain program has been deployed from this repository.
