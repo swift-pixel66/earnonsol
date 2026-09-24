@@ -1,0 +1,92 @@
+{
+  "title": "EARN on Solana — Technical Overview",
+  "language": "en",
+  "voice": "Samantha",
+  "durationSeconds": 120,
+  "architectureAsOf": "2026-09-24",
+  "scenes": [
+    {
+      "id": "overview",
+      "duration": 14,
+      "eyebrow": "01 / THE SYSTEM",
+      "title": "Architecture, made visible.",
+      "sentences": [
+        "Here is EARN on Solana in two minutes.",
+        "We will follow the real system, from the browser to liquidity pools.",
+        "And separate that architecture from this repository's new example code."
+      ]
+    },
+    {
+      "id": "edge",
+      "duration": 17,
+      "eyebrow": "02 / INTERFACES AND THE EDGE",
+      "title": "A familiar interface. A defined boundary.",
+      "sentences": [
+        "The homepage and vault app use React and TypeScript, served through Cloudflare Workers.",
+        "The user's wallet approves and signs transactions.",
+        "The Worker provides the RPC gateway, market statistics, and Keeper status."
+      ]
+    },
+    {
+      "id": "transactions",
+      "duration": 20,
+      "eyebrow": "03 / THE USER TRANSACTION",
+      "title": "From USDC to vault shares.",
+      "sentences": [
+        "A deposit starts with USDC.",
+        "The app converts it into the selected asset pair and deposits it in one atomic transaction.",
+        "The vault program issues shares and manages liquidity through Raydium CLMM.",
+        "Redemption burns shares and returns the underlying asset plus USDC."
+      ]
+    },
+    {
+      "id": "keeper",
+      "duration": 24,
+      "eyebrow": "04 / AUTOMATION",
+      "title": "Daily decisions. Explicit execution rules.",
+      "sentences": [
+        "Keeper coordination lives in a separate Durable Object for each network and vault.",
+        "Each vault has one daily strategy slot, in the UTC zero cycle.",
+        "A signed transaction is journaled and submitted once.",
+        "Pending signatures are checked every forty-five seconds.",
+        "Failure or expiry waits for the next daily decision.",
+        "Fee-only reinvestment requires ten USDC in combined unclaimed fees."
+      ]
+    },
+    {
+      "id": "transport",
+      "duration": 18,
+      "eyebrow": "05 / DATA AND TRANSPORT",
+      "title": "Resilient reads. Controlled submissions.",
+      "sentences": [
+        "RPC traffic uses a primary Helius provider, a standby, and a public endpoint.",
+        "Read failover never means replaying a submitted Keeper transaction.",
+        "Homepage market caching is only for display.",
+        "Accounting and execution use chain state, while idle app pages avoid polling."
+      ]
+    },
+    {
+      "id": "controls",
+      "duration": 17,
+      "eyebrow": "06 / ON-CHAIN CONTROL",
+      "title": "Shared logic. Separate authority roles.",
+      "sentences": [
+        "Mainnet and Devnet share program logic, with separate identities and execution policies.",
+        "Each network currently publishes six live vaults, and the registry can grow.",
+        "Management can independently pause deposits, withdrawals, or strategy investment.",
+        "Compatible upgrades preserve existing program and account identities."
+      ]
+    },
+    {
+      "id": "source",
+      "duration": 10,
+      "eyebrow": "07 / EXPLORE THE REPOSITORY",
+      "title": "Fresh code. A real system map.",
+      "sentences": [
+        "The diagram reflects the deployed system.",
+        "This repository's website and Rust counter are fresh starter examples.",
+        "Explore the source, tests, and architecture on GitHub."
+      ]
+    }
+  ]
+}

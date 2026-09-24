@@ -9,3 +9,6 @@ target/
 dist/
 coverage/
 .tooling/
+.build/
+.venv/
+__pycache__/

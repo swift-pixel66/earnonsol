@@ -6,6 +6,7 @@ A small, independent starting point for a project website and a native Solana pr
 | --- | --- |
 | [`website/`](website/) | A static landing page with no build step. |
 | [`contract/`](contract/) | A Rust program demonstrating authority-controlled account state. |
+| [`video/`](video/) | A two-minute technical walkthrough of the current system architecture. |
 
 Each directory contains its own development instructions. This repository starts with fresh source and an independent Git history.
 
