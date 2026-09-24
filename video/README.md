@@ -6,7 +6,7 @@ A 120-second motion-graphics walkthrough with English narration and English subt
 
 [Watch or download the MP4](earnonsol-technical-overview.mp4?raw=true) · [English SRT](earnonsol-technical-overview.en.srt) · [Media manifest](media-info.json)
 
-The architecture follows the current system map in the [repository README](../README.md#system-architecture), reviewed as of 2026-09-24. The website and counter code in this repository are independent examples. The video does not claim that those examples power the deployed product.
+The Meteora DAMM V2 architecture follows the system map in the [repository README](../README.md#system-architecture), updated on 2026-09-24. The website and counter code in this repository are independent examples. The video does not claim that those examples power the deployed product.
 
 ## Chapters
 

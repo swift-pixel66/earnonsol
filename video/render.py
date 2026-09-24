@@ -136,9 +136,9 @@ def frame(story, scene_index, local_time, absolute_time, caption=""):
         three_cards(draw, [
             ("01 / EXPERIENCE", "Homepage + Vault App", "User wallet signs transactions"),
             ("02 / COORDINATION", "Cloudflare", "Worker + Durable Objects"),
-            ("03 / EXECUTION", "Solana", "EARN vaults + Raydium CLMM"),
+            ("03 / EXECUTION", "Solana", "EARN vaults + Meteora DAMM V2"),
         ], time, scene["duration"])
-        band(draw, "SYSTEM MAP", "Current deployed architecture  •  Reviewed September 24, 2026")
+        band(draw, "SYSTEM MAP", "Meteora DAMM V2 architecture  •  EARN on Solana")
     elif scene_id == "edge":
         draw.text((64, 219), "THE WALLET APPROVES. THE GATEWAY VALIDATES.", font=font(14, mono=True), fill=MUTED)
         three_cards(draw, [
@@ -152,7 +152,7 @@ def frame(story, scene_index, local_time, absolute_time, caption=""):
         three_cards(draw, [
             ("01 / USER INPUT", "USDC", "Wallet approves and signs"),
             ("02 / ATOMIC TRANSACTION", "Convert + deposit", "Selected asset pair enters vault"),
-            ("03 / ON-CHAIN POSITION", "Vault shares", "Raydium CLMM liquidity"),
+            ("03 / ON-CHAIN POSITION", "Vault shares", "Meteora DAMM V2 liquidity"),
         ], time, scene["duration"])
         band(draw, "REDEMPTION", "Burn vault shares  →  Receive the underlying asset + USDC")
     elif scene_id == "keeper":
@@ -221,7 +221,7 @@ def duration(path):
 
 def spoken(text):
     for original, replacement in [("EARN", "Earn"), ("USDC", "U S D C"), ("RPC", "R P C"),
-                                  ("CLMM", "C L M M"), ("UTC", "U T C"), ("Raydium", "Ray dee um")]:
+                                  ("DAMM V2", "D A M M version two"), ("UTC", "U T C"), ("Meteora", "Mee tee or ah")]:
         text = text.replace(original, replacement)
     return text
 

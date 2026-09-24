@@ -1,12 +1,12 @@
 # EARN on Solana
 
-A fresh website, a native Solana program example, and a technical walkthrough of the current EARN architecture.
+A fresh website, a native Solana program example, and a technical walkthrough of the EARN Meteora DAMM V2 architecture.
 
 | Directory | Purpose |
 | --- | --- |
 | [`website/`](website/) | A static landing page with no build step. |
 | [`contract/`](contract/) | A Rust program demonstrating authority-controlled account state. |
-| [`video/`](video/) | A two-minute technical walkthrough of the current system architecture. |
+| [`video/`](video/) | A two-minute technical walkthrough of the system architecture. |
 
 Each directory contains its own development instructions. This repository starts with fresh source and an independent Git history.
 
@@ -14,7 +14,7 @@ Each directory contains its own development instructions. This repository starts
 
 ## System architecture
 
-The diagram describes the current EARN system, reviewed against the deployment record dated **2026-09-24**, the active execution policies, and the deployed service structure. The two source directories in this repository are independent starter implementations, not the source of that deployment.
+The diagram presents the EARN Meteora DAMM V2 architecture across browser interfaces, Cloudflare services, and on-chain vaults. The website and contract directories in this repository are independent starter implementations.
 
 ```mermaid
 flowchart TB
@@ -39,14 +39,14 @@ flowchart TB
     Cron --> Keeper
   end
 
-  MarketAPI["Raydium market API<br/>Historical pool statistics"]
+  MarketAPI["Meteora DAMM V2 market API<br/>Historical pool statistics"]
   RPC["Server-side RPC transport<br/>Primary Helius → standby Helius → public RPC"]
 
   subgraph Solana["Solana: isolated Mainnet and Devnet deployments"]
     Program["EARN vault program<br/>Shared logic; stable program ID per network"]
     Registry["Registrar registry<br/>Approved vault identities"]
     State["Separate vault accounts<br/>Custody, share mints and controls"]
-    Pool["Raydium CLMM<br/>Pools and vault LP positions"]
+    Pool["Meteora DAMM V2<br/>Pools and vault LP positions"]
     Tokens["SPL Token / Token-2022<br/>Underlying assets and vault shares"]
     Program --> Registry
     Program --> State

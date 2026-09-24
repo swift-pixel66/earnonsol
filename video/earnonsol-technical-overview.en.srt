@@ -1,13 +1,13 @@
 1
-00:00:00,450 --> 00:00:03,113
+00:00:00,450 --> 00:00:03,063
 Here is EARN on Solana in two minutes.
 
 2
-00:00:03,233 --> 00:00:08,386
-We will follow the real system, from the browser to liquidity pools.
+00:00:03,183 --> 00:00:08,483
+We will follow the system design, from the browser to liquidity pools.
 
 3
-00:00:08,506 --> 00:00:13,650
+00:00:08,603 --> 00:00:13,650
 And separate that architecture from this repository's new example code.
 
 4
@@ -23,19 +23,19 @@ The user's wallet approves and signs transactions.
 The Worker provides the RPC gateway, market statistics, and Keeper status.
 
 7
-00:00:31,450 --> 00:00:34,077
+00:00:31,450 --> 00:00:33,964
 A deposit starts with USDC.
 
 8
-00:00:34,197 --> 00:00:40,071
+00:00:34,084 --> 00:00:39,704
 The app converts it into the selected asset pair and deposits it in one atomic transaction.
 
 9
-00:00:40,191 --> 00:00:45,495
-The vault program issues shares and manages liquidity through Raydium CLMM.
+00:00:39,824 --> 00:00:45,713
+The vault program issues shares and manages liquidity through Meteora DAMM V2.
 
 10
-00:00:45,615 --> 00:00:50,650
+00:00:45,833 --> 00:00:50,650
 Redemption burns shares and returns the underlying asset plus USDC.
 
 11
@@ -95,13 +95,13 @@ Management can independently pause deposits, withdrawals, or strategy investment
 Compatible upgrades preserve existing program and account identities.
 
 25
-00:01:50,450 --> 00:01:52,516
-The diagram reflects the deployed system.
+00:01:50,450 --> 00:01:53,432
+The diagram maps the Meteora DAMM V2 architecture.
 
 26
-00:01:52,636 --> 00:01:56,277
+00:01:53,552 --> 00:01:56,709
 This repository's website and Rust counter are fresh starter examples.
 
 27
-00:01:56,397 --> 00:01:59,650
+00:01:56,830 --> 00:01:59,650
 Explore the source, tests, and architecture on GitHub.

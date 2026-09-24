@@ -1,6 +1,6 @@
 # Website
 
-Static HTML and CSS for an independent EARN on Solana landing page. The page links to both source directories and the current system architecture.
+Static HTML and CSS for an independent EARN on Solana landing page. The page links to both source directories and the Meteora DAMM V2 system architecture.
 
 ## Local preview
 
