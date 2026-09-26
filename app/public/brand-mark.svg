@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1254" height="1254" viewBox="147 144 960 960" role="img" aria-labelledby="title desc">
+  <title id="title">EARN Loop Logo</title>
+  <desc id="desc">Vector reconstruction of the approved Loop logo: purple folded e with a mint terminal, on transparent background.</desc>
+  <path id="mint-terminal" fill="#20C997" d="M 850,762 L 977,685 C 1007,667 1030,686 1030,715 L 1030,784 C 1030,834 1006,874 965,899 L 863,942 L 850,762 Z"/>
+  <path id="purple-loop" fill="#7047EB" d="M 557,212 C 600,186 644,186 688,212 L 956,366 C 1005,394 1031,440 1031,491 L 1031,550 C 1031,600 1007,634 964,660 L 883,706 C 865,716 848,721 819,721 L 546,721 C 498,721 461,688 461,646 C 461,603 498,571 546,571 L 814,571 C 844,571 868,548 868,520 C 868,499 857,480 839,469 L 660,373 C 639,361 614,364 594,376 L 410,479 C 389,491 377,511 377,536 L 377,714 C 377,737 388,755 409,768 L 591,860 C 612,872 637,871 657,860 L 844,756 C 868,742 895,760 895,786 L 895,902 C 895,918 889,930 875,939 L 689,1040 C 647,1063 602,1062 563,1039 L 302,891 C 251,862 222,818 222,764 L 222,490 C 222,436 250,393 299,364 Z"/>
+</svg>
