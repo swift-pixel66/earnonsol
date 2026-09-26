@@ -75,6 +75,41 @@ The position NFT is owned by the vault PDA, so the program signs the Meteora CPI
 with its seeds. Share amounts are kept at token scale to stay within `u64` while
 Meteora liquidity is Q64.64.
 
+## Meteora DBC — equity launchpad (hackathon track)
+
+Newly tokenized and pre-IPO equities (Tessera T-stocks, PreStock) are thin and
+have no price. EARN uses **Meteora's Dynamic Bonding Curve (DBC)** as a *price-
+discovery launchpad tuned for equities* — not memecoins — that graduates straight
+into a Meteora DAMM v2 pool, which the EARN vault then market-makes. One primitive,
+full lifecycle: **launch → price discovery → graduate → auto-LP.**
+
+**What makes the DBC config equity-tuned** ([`program/scripts/dbc-launch.mjs`](program/scripts/dbc-launch.mjs)):
+
+- **USDC-quoted**, not SOL — equities are priced in dollars, so the curve, fees and
+  market caps are all denominated in USDC.
+- **Anti-snipe fee decay** — a linear fee scheduler starts at **3%** and decays to
+  **1%**, dampening the launch-spike that wrecks thin markets, then normalizing.
+- **Dynamic volatility fee** — an extra surcharge during volatile windows, suited
+  to illiquid equity pairs.
+- **Locked LP on graduation** — 100% permanent-locked LP when it migrates, so the
+  graduated market can't be rugged.
+- **Graduates to DAMM v2** at a **$50k** market cap, then the EARN vault provides
+  and manages that liquidity.
+
+**Launched & verified on Devnet** (config `AvUQpyyo3mAgicFwY2mh3AkEBDtvUbeFwAGv5sWfyyof`,
+DBC program `dbcij3LWUppWqq96dh6gJWwBifmcGfLSB5D4DuSMaqN`):
+
+| Token | Asset | Base mint |
+| --- | --- | --- |
+| TKALSHI | Tessera Kalshi (T-stock) | `EMrDG1YBVozLT2k5CKV2BqWVuPhywmhxX18xmvTqHa18` |
+| TOPENAI | Tessera OpenAI (T-stock) | `E9CKxTFVmrNfEbAM55XDRGE2cQR4W4qzhcXkLfVYPWwz` |
+| ANTHRO  | Anthropic (PreStock, pre-IPO) | `Ef69GJC98ZBxithE7nBHTJ2YJMbnXqSwyPTE9ogvYEvq` |
+| FIGURE  | Figure AI (PreStock, pre-IPO) | `BjQ2jtuzPzc7Z2uCnfUf1UkdGMoBWPwzDehGDKpvSiGm` |
+
+Config creation, all four launches, and a live on-curve **buy** (price discovery)
+are verified end-to-end — [`program/scripts/dbc-launch.mjs`](program/scripts/dbc-launch.mjs)
++ [`dbc-buy.mjs`](program/scripts/dbc-buy.mjs).
+
 ## Tech stack
 
 - **Contract:** Rust + Anchor 0.31, CPI into Meteora cp-amm (`cpamdpZC…`).
@@ -136,12 +171,14 @@ runs the full path on Devnet: create a cp-amm pool + a vault-owned position →
 
 ## Status & roadmap
 
-- ✅ Landing page reproduced 1:1, with live pool data.
+- ✅ Landing page reproduced 1:1, live pool data, deployed on Vercel (HTTPS).
 - ✅ Vault program deployed to Devnet; Meteora DAMM v2 CPI verified end-to-end.
+- ✅ Meteora DBC equity launchpad: equity-tuned config + 4 tokenized-stock launches
+  (Tessera / PreStock) + on-curve buy, verified on Devnet.
 - 🚧 Wiring the browser deposit/withdraw buttons to the v2 Meteora instruction
   (client-side deposit quote + cp-amm accounts); program flow already proven.
-- ⏭️ USDC-only deposit with in-transaction swap; keeper-based range rebalancing;
-  mainnet.
+- ⏭️ Surface DBC launches in the UI; USDC-only deposit with in-tx swap;
+  keeper-based range rebalancing; mainnet.
 
 ## Disclaimer
 
