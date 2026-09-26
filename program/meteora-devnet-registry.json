@@ -1,0 +1,28 @@
+{
+  "network": "devnet",
+  "programId": "767woN2qJdFwFmw415arDXGVnk6JaTymGmzy6BSzc8YT",
+  "cpAmm": "cpamdpZCGKUy5JxQXB4dcpGPiikHawvSWAd6mEn1sGG",
+  "usdcMint": "EgFLnzxzWLUrSFoDfY2jezmLAHqH2aakxvGRY8GsnY8j",
+  "vaults": {
+    "nvda": {
+      "id": "nvda",
+      "symbol": "NVDAx",
+      "name": "NVIDIA",
+      "aFirst": true,
+      "vault": "BLbvaFX5TfFCkYkKNWaufhy67BJEUa7sUYh8WU1ffoF9",
+      "shareMint": "4ddzg966EH111jqZMvPWpqWggjjnesSFL9wv7FCXeKgT",
+      "assetMint": "EBy9Yhu6tDqbUPb8hYPSoxpNmjXJUAcZQpqXFFPpnJB1",
+      "assetVault": "DHJ5E28ePGg2Da9xPDX6aRqUH23zPKcBv6372wGPtRfT",
+      "usdcVault": "HLP4tfpy62VyLATyFKtjJdyEov7io6oV7gD6hHEWscyp",
+      "pool": "CWCYyLJe5tPEXKr3HyWB2A9XoMMwgkFRfBfcsWVFiAVG",
+      "position": "Dec6hQa982F3QkNUDM6dYfCL9vMkEebAC2tCCJDfJvvj",
+      "positionNftAccount": "FAwb3wYwYJ97zbfqg8Nb1zQq7qZJdf3QMBjxBkRghQys",
+      "tokenAMint": "EBy9Yhu6tDqbUPb8hYPSoxpNmjXJUAcZQpqXFFPpnJB1",
+      "tokenBMint": "EgFLnzxzWLUrSFoDfY2jezmLAHqH2aakxvGRY8GsnY8j",
+      "tokenAVault": "HTXkZuH54AcuGKqJM6p6XcLJvjsa92nLqnSa5kqpNyxv",
+      "tokenBVault": "CYmrGPLa7pFHc1at5iaC1vut78zXqt1hiwzvZBkGJaNg",
+      "poolAuthority": "HLnpSz9h2S4hiLQ43rnSD9XkcUThA7B8hQMKmDaiTLcC",
+      "eventAuthority": "3rmHSu74h1ZcmAisVcWerTCiRDQbUrBKmcwptYGjHfet"
+    }
+  }
+}

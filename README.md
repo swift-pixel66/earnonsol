@@ -174,11 +174,13 @@ runs the full path on Devnet: create a cp-amm pool + a vault-owned position →
 - ✅ Landing page reproduced 1:1, live pool data, deployed on Vercel (HTTPS).
 - ✅ Vault program deployed to Devnet; Meteora DAMM v2 CPI verified end-to-end.
 - ✅ Meteora DBC equity launchpad: equity-tuned config + 4 tokenized-stock launches
-  (Tessera / PreStock) + on-curve buy, verified on Devnet.
-- 🚧 Wiring the browser deposit/withdraw buttons to the v2 Meteora instruction
-  (client-side deposit quote + cp-amm accounts); program flow already proven.
-- ⏭️ Surface DBC launches in the UI; USDC-only deposit with in-tx swap;
-  keeper-based range rebalancing; mainnet.
+  (Tessera / PreStock) + on-curve buy, verified on Devnet, surfaced on the landing
+  (`/#launchpad`).
+- ✅ Browser deposit/withdraw wired to the v2 Meteora instruction (client-side
+  deposit quote + cp-amm accounts) and verified against the live NVDA Devnet vault;
+  in-app faucet mints test USDC + asset.
+- ⏭️ USDC-only deposit with in-tx swap; more Devnet Meteora vaults; DBC→DAMM v2
+  graduation wired into the vault registry; keeper-based rebalancing; mainnet.
 
 ## Disclaimer
 

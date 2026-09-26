@@ -4,7 +4,7 @@ import { PublicKey } from "@solana/web3.js";
 import { VaultConfig } from "../lib/registry";
 import { short, usdcBalance, shareBalance, selectedNetwork } from "../lib/chain";
 import { getAllPoolInfo, PoolInfo, fmtCompactUsd, fmtNum } from "../lib/raydium";
-import { DEVNET } from "../lib/devnet";
+import { meteoraVaultFor } from "../lib/vaultClient";
 import {
   buildDepositTx,
   buildWithdrawTx,
@@ -36,7 +36,7 @@ export function VaultPanel({ vault }: { vault: VaultConfig }) {
     }
     if (selectedNetwork() === "devnet") {
       // Devnet: no external pool — show the vault's own USDC reserve as depth.
-      const d = DEVNET.vaults[vault.id];
+      const d = meteoraVaultFor(vault.id);
       if (!d) { setLoadingPool(false); return; }
       connection
         .getTokenAccountBalance(new PublicKey(d.usdcVault))
@@ -62,7 +62,7 @@ export function VaultPanel({ vault }: { vault: VaultConfig }) {
   }, [vault.id]);
 
   const isDev = selectedNetwork() === "devnet";
-  const devVault = DEVNET.vaults[vault.id];
+  const devVault = meteoraVaultFor(vault.id);
   const activeShareMint = isDev ? devVault?.shareMint : vault.shareMint;
 
   async function refreshBalances() {
@@ -267,13 +267,17 @@ export function VaultPanel({ vault }: { vault: VaultConfig }) {
           </div>
         </div>
 
-        <button className="btn-primary block" onClick={submit} disabled={busy || vault.comingSoon}>
-          {busy ? "Confirm in wallet…" : tab === "deposit" ? "→ Deposit USDC" : "→ Withdraw"}
+        <button className="btn-primary block" onClick={submit} disabled={busy || vault.comingSoon || (isDev && !devVault)}>
+          {busy ? "Confirm in wallet…" : !isDev ? "→ Switch to Devnet (?env=dev)" : tab === "deposit" ? "→ Deposit USDC" : "→ Withdraw"}
         </button>
 
-        {isDev && (import.meta.env.VITE_FAUCET_URL || import.meta.env.DEV) && (
+        {isDev && !devVault && (
+          <p className="panel-note">This vault's Meteora pool is set up on Devnet for <b>NVDA</b> in this build — open <code>/app?env=dev&vault=nvda</code> to try live deposit/withdraw.</p>
+        )}
+
+        {isDev && devVault && (import.meta.env.VITE_FAUCET_URL || import.meta.env.DEV) && (
           <button className="faucet-btn" onClick={faucet} disabled={busy || !publicKey}>
-            {publicKey ? "🚰 Get 1000 test USDC" : "Connect a wallet to get test USDC"}
+            {publicKey ? "🚰 Get test USDC + asset" : "Connect a wallet to get test tokens"}
           </button>
         )}
 
