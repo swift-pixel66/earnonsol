@@ -1,77 +1,107 @@
 # EARN on Solana
 
-A fresh website, a native Solana program example, and a technical walkthrough of the EARN Meteora DAMM V2 architecture.
+Deposit USDC into automatic liquidity vaults for tokenized stocks on Solana.
+Deposit once — the vault provides that liquidity on **Meteora DAMM v2** and hands
+you vault shares. This repository contains the full reproduction: a pixel-faithful
+landing page, a React vault app, and a Solana vault program deployed on Devnet
+that integrates Meteora's cp-amm via CPI.
 
 | Directory | Purpose |
 | --- | --- |
-| [`website/`](website/) | A static landing page with no build step. |
-| [`contract/`](contract/) | A Rust program demonstrating authority-controlled account state. |
-| [`video/`](video/) | A two-minute technical walkthrough of the system architecture. |
+| [`app/`](app/) | The website: 1:1 landing page (`/`) + React vault app (`/app/`), one Vite build. |
+| [`program/`](program/) | Anchor vault program (Devnet) that CPIs into Meteora DAMM v2 (cp-amm). |
+| [`website/`](website/) | Original static landing snapshot (reference). |
+| [`video/`](video/) | Two-minute technical walkthrough. |
 
-Each directory contains its own development instructions. This repository starts with fresh source and an independent Git history.
+## Live
 
-[Watch the two-minute technical overview](video/earnonsol-technical-overview.mp4?raw=true) · [English subtitles](video/earnonsol-technical-overview.en.srt)
+- Landing + app (AWS S3): http://earnonsol-app-91813308.s3-website.eu-central-1.amazonaws.com/
+- Vault program (Devnet): `767woN2qJdFwFmw415arDXGVnk6JaTymGmzy6BSzc8YT`
+- Meteora DAMM v2 (cp-amm): `cpamdpZCGKUy5JxQXB4dcpGPiikHawvSWAd6mEn1sGG`
 
-## System architecture
+## Website (`app/`)
 
-The diagram presents the EARN Meteora DAMM V2 architecture across browser interfaces, Cloudflare services, and on-chain vaults. The website and contract directories in this repository are independent starter implementations.
+React + Vite + TypeScript, Solana wallet-adapter.
+
+```bash
+cd app
+pnpm install
+pnpm dev          # http://127.0.0.1:5173  (landing)  ·  /app/ (vault app)
+pnpm build        # static multi-page build in dist/
+```
+
+- `/` — landing page restored 1:1 from the original (real HTML/CSS), with **live**
+  pool APR / liquidity / 24h fees injected from the public pool API.
+- `/app/` — vault app: wallet connect, live pool stats, deposit / withdraw UI.
+  `?vault=<id>` selects a vault, `?env=dev` uses Devnet, `?rpc=<url>` overrides RPC.
+  (The browser deposit/withdraw calls are being rewired to the v2 Meteora
+  instruction layout — the program-level flow is already verified by
+  `program/scripts/e2e-meteora.mjs`.)
+- Live pool data needs a real RPC only for wallet/chain reads; provide one via
+  `.env` (`VITE_RPC_MAINNET=`, see `app/.env.example`). The token is never bundled
+  into the public build.
+
+## Vault program (`program/`)
+
+An Anchor program: a vault that owns a single Meteora cp-amm position. Depositors
+supply the asset + USDC pair; the vault adds that liquidity to its position via CPI
+and mints shares proportional to the liquidity added. Redeeming shares removes the
+proportional liquidity and returns the underlying tokens.
+
+Instructions: `initialize_vault`, `set_pool`, `deposit`, `withdraw`, `set_pause`.
+
+```bash
+cd program
+export DEVELOPER_DIR=/Library/Developer/CommandLineTools   # this host's Xcode is broken
+anchor build
+# deploy / setup / e2e scripts live in program/scripts
+```
+
+`program/scripts`:
+- `cpamm-setup.mjs` — create a Meteora cp-amm pool and prove add/remove liquidity.
+- `e2e-meteora.mjs` — full end-to-end: pool + vault-owned position → initialize_vault
+  → set_pool → deposit (CPI add_liquidity) → withdraw (CPI remove_liquidity).
+- `faucet-server.mjs` — local Devnet test-USDC faucet.
+
+The Meteora deposit/withdraw path is verified end-to-end on Devnet.
+
+## Architecture
 
 ```mermaid
 flowchart TB
-  subgraph Browser["Browser"]
-    Home["Homepage<br/>earnonsol.com"]
-    App["Vault App<br/>app.earnonsol.com"]
-    Wallet["User wallet<br/>Wallet Standard signing"]
-    Wallet <-->|"approve and sign"| App
+  subgraph Browser
+    Home["Landing /"]
+    App["Vault app /app/"]
+    Wallet["Wallet"]
+    Wallet <-->|sign| App
   end
-
-  subgraph Cloudflare["Cloudflare"]
-    Edge["Worker + static assets<br/>React / TypeScript / Vite"]
-    Market["Market statistics cache<br/>Display only"]
-    Gateway["Same-origin RPC gateway<br/>Request and network validation"]
-    Cron["Daily Cron: UTC 00"]
-    Keeper["Keeper Durable Objects<br/>Per-network, per-vault journal + alarms"]
-    Faucet["Devnet faucet Durable Object<br/>Test USDC inventory"]
-    Edge --> Market
-    Edge --> Gateway
-    Edge -->|"keeper status"| Keeper
-    Edge -.->|"Devnet only"| Faucet
-    Cron --> Keeper
+  subgraph Solana["Solana Devnet"]
+    Program["EARN vault program"]
+    Vault["Vault PDA + share mint"]
+    Pos["cp-amm position (vault-owned)"]
+    Pool["Meteora DAMM v2 pool"]
+    Program --> Vault
+    Program -->|CPI add/remove liquidity| Pool
+    Vault --> Pos
+    Pos --> Pool
   end
-
-  MarketAPI["Meteora DAMM V2 market API<br/>Historical pool statistics"]
-  RPC["Server-side RPC transport<br/>Primary Helius → standby Helius → public RPC"]
-
-  subgraph Solana["Solana: isolated Mainnet and Devnet deployments"]
-    Program["EARN vault program<br/>Shared logic; stable program ID per network"]
-    Registry["Registrar registry<br/>Approved vault identities"]
-    State["Separate vault accounts<br/>Custody, share mints and controls"]
-    Pool["Meteora DAMM V2<br/>Pools and vault LP positions"]
-    Tokens["SPL Token / Token-2022<br/>Underlying assets and vault shares"]
-    Program --> Registry
-    Program --> State
-    Program -->|"CPI: manage liquidity"| Pool
-    Program -->|"CPI: token operations"| Tokens
-    Pool --> Tokens
-  end
-
-  Home -->|"page and market reads"| Edge
-  App -->|"reads and signed transactions"| Edge
-  Market --> MarketAPI
-  Gateway --> RPC
-  Keeper -->|"strategy transaction and confirmation"| RPC
-  Faucet -->|"test token transfers"| RPC
-  RPC --> Program
-  RPC -->|"atomic deposit conversion"| Pool
-  RPC --> Tokens
+  Home -->|live pool stats API| App
+  App -->|deposit / withdraw| Program
 ```
 
-- **User transactions:** the App converts USDC into the selected pair and deposits it atomically. Vault shares represent the user's position. Redemption burns shares and returns the underlying asset plus USDC.
-- **Automation:** each vault keeps its daily minute offset. The Keeper journals a signed transaction before submitting it once; pending signatures receive separate 45-second confirmation checks. Failure or expiry waits for the next daily strategy decision. Fee-only reinvestment requires at least 10 USDC of combined unclaimed fees per vault.
-- **Data boundaries:** homepage market caching is for display. Accounting, quotes and strategy execution use chain reads. Idle App pages do not poll RPC. Provider failover does not rebroadcast a submitted Keeper transaction.
-- **Authority boundaries:** registrar, vault management, Keeper and program upgrade authority are separate roles. Management can independently pause deposits, withdrawals and new strategy investment. Compatible upgrades preserve the program ID, vault accounts and existing shares.
-- **Networks:** public pages default to Mainnet; `?env=dev` selects Devnet. Both networks have six published live vaults. The catalog is extensible rather than limited to six. The test-token faucet serves Devnet only.
+- **Deposit:** the app supplies the asset + USDC pair; the vault CPIs cp-amm
+  `add_liquidity` into its position and mints shares.
+- **Withdraw:** the vault burns shares, CPIs cp-amm `remove_liquidity` for the
+  proportional liquidity, and returns the underlying tokens.
+- **Authority:** management can pause deposits/withdrawals; the program upgrade
+  authority is a separate role.
 
 ## Status
 
-The independent landing page and counter example are implemented. The counter passes 10 host tests and Clippy with warnings denied. No website or on-chain program has been deployed from this repository.
+- Landing page: reproduced 1:1, live pool data. ✅
+- Vault program: deployed to Devnet, Meteora DAMM v2 CPI (deposit add-liquidity /
+  withdraw remove-liquidity) verified end-to-end. ✅
+- Vault app: UI complete; browser deposit/withdraw is being rewired to the v2
+  Meteora instruction layout. 🚧
+
+Devnet only — not deployed to mainnet.

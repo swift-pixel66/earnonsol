@@ -121,12 +121,13 @@ export function VaultPanel({ vault }: { vault: VaultConfig }) {
     }
   }
 
+  const faucetUrl = (import.meta.env.VITE_FAUCET_URL as string) || "http://127.0.0.1:8899/faucet";
   async function faucet() {
     if (!publicKey) return setStatus("Connect a wallet first.");
     setBusy(true);
     setStatus("Requesting test USDC…");
     try {
-      const r = await fetch(`http://127.0.0.1:8899/faucet?to=${publicKey.toBase58()}`);
+      const r = await fetch(`${faucetUrl}?to=${publicKey.toBase58()}`);
       const j = await r.json();
       if (j.ok) {
         setStatus("✅ Received 1000 test USDC");
@@ -149,7 +150,7 @@ export function VaultPanel({ vault }: { vault: VaultConfig }) {
           <span className="card-label">{vault.short} VAULT</span>
           <button className="icon-btn" aria-label="Refresh" onClick={() => {
             setLoadingPool(true);
-            fetchPoolStats(connection, vault).then((s) => { setPool(s); setLoadingPool(false); });
+            getAllPoolInfo().then((all) => { setPool(all[vault.id] ?? null); setLoadingPool(false); });
           }}>
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
           </button>
@@ -270,7 +271,7 @@ export function VaultPanel({ vault }: { vault: VaultConfig }) {
           {busy ? "Confirm in wallet…" : tab === "deposit" ? "→ Deposit USDC" : "→ Withdraw"}
         </button>
 
-        {isDev && (
+        {isDev && (import.meta.env.VITE_FAUCET_URL || import.meta.env.DEV) && (
           <button className="faucet-btn" onClick={faucet} disabled={busy || !publicKey}>
             {publicKey ? "🚰 Get 1000 test USDC" : "Connect a wallet to get test USDC"}
           </button>
