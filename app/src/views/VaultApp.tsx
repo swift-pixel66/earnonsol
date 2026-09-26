@@ -1,7 +1,6 @@
 import { useMemo, useState, useEffect } from "react";
 import { VAULTS, getVault } from "../lib/registry";
 import { Header } from "../components/Header";
-import { SecurityStrip } from "../components/SecurityStrip";
 import { VaultPanel } from "../components/VaultPanel";
 
 function useVaultParam() {
@@ -31,7 +30,6 @@ export function VaultApp() {
     <div className="app">
       <Header variant="app" />
       <main className="app-main">
-        <SecurityStrip />
 
         <section className="hero">
           <div className="kicker">ON-CHAIN AUTOMATIC LIQUIDITY VAULTS</div>
@@ -69,7 +67,7 @@ export function VaultApp() {
             <a href={`https://solscan.io/account/${vault.vaultState ?? ""}`} target="_blank" rel="noreferrer">Smart contract ↗</a>
             <a href={`https://solscan.io/account/${vault.vaultState ?? ""}`} target="_blank" rel="noreferrer">Vault ↗</a>
             <a href={`https://solscan.io/account/${vault.meteoraPool ?? ""}`} target="_blank" rel="noreferrer">Liquidity pool ↗</a>
-            <a href="/" onClick={(e) => { e.preventDefault(); history.pushState({}, "", "/"); window.dispatchEvent(new PopStateEvent("popstate")); }}>How it works ↗</a>
+            <a href="/#how-it-works">How it works ↗</a>
           </nav>
         </footer>
       </main>

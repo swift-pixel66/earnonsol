@@ -1,0 +1,44 @@
+{
+  "network": "devnet",
+  "programId": "767woN2qJdFwFmw415arDXGVnk6JaTymGmzy6BSzc8YT",
+  "usdcMint": "EgFLnzxzWLUrSFoDfY2jezmLAHqH2aakxvGRY8GsnY8j",
+  "mintAuthority": "9hczkrouyxnTZ4eaawMcKJJ96t8xe8nbGYwadf1ua6fK",
+  "vaults": {
+    "nvda": {
+      "vault": "7vqemPRXCdkUrKRfsuaiEfZBwFAyzPfpATCjDfcBdNRE",
+      "assetMint": "7Zza53NHQuX6u5irDYk6AU6M1hmGEdLHYTWZyPyAQe8F",
+      "shareMint": "BaW5y8iGkYN9aRTkbLaTczjU9PSzFYDiTTCsqR9JNkMN",
+      "usdcVault": "8Wv1hyqNUTPxF4tfceXngisd35riRz32smEGELeqYbQp"
+    },
+    "tsla": {
+      "vault": "ADxNBWtmhPdTN9AASfg7rN3KC22VVr1bePL6ubDk29ur",
+      "assetMint": "Y9y9egUg611EyfbaHwp3Ui7KF6ZJPCtS6VmXA7ECeEy",
+      "shareMint": "9Mupgk7oiBq8GAHLMJ8XQx61SEkoFJ7Ge2RRD2rxf7bN",
+      "usdcVault": "D6arP4e15jEP9fvX8sHYpCUueTzsXu1QM8hn5JQe443R"
+    },
+    "aapl": {
+      "vault": "23gmQ92fqScWtmRumpRh1KKogSC6DRKPJsByESqYiB9K",
+      "assetMint": "AQtfKqgNX8ZkpSkt2xCAajU5CPEmWgnCjrthw8djY7Ef",
+      "shareMint": "5DrbiohP1c4p6U6PpLMvRk8SVfuA7UdrHkDo9UaPkrJc",
+      "usdcVault": "5MRxGEhsd2CsbB8bLE6cGWrgrVAPd9nsByi9QBn3gEvw"
+    },
+    "spy": {
+      "vault": "2wWk2p9DYsbKWVkxU5y9RJdSEmQnsW2XYV8bH19aADMy",
+      "assetMint": "CmQEEuCFxkgG6A5ptxgqm5MgUk1BZkuxY4SiproU2dmA",
+      "shareMint": "GfgoxEH72tn2AcHETETH5Qwy9E2LjVQdopodHU7rA5BK",
+      "usdcVault": "DB7dh4oyVFCGKY7XfXUdh6xTtVpTt7LCbJkeQqUTULzN"
+    },
+    "qqq": {
+      "vault": "DJrAHVjrQLTX9xZzYbBgPcad2X8FVMJYXtvr6WsXnjX",
+      "assetMint": "8eFSzNPUPG1ioUDgkTB4ik7WeTXMs6PPrvYizUgZN9GV",
+      "shareMint": "6zNkzXxRAh3mCcQKia5fSHHscGdWn9d1JQgycjXbUAXo",
+      "usdcVault": "HwcTkMnu9uuWZtszGsc2gMurDKVUzxDrjsftJbeGG6W5"
+    },
+    "stonk": {
+      "vault": "Cjfk8xQqaxFhDbssfcj51bhMQoGe6Domq5TmgZinYCK6",
+      "assetMint": "Me9wnmVUPQa9fzzyWRa2cAVVuyiZAgzrz1BiUDh7u56",
+      "shareMint": "2yaQCd1r6pjBt4aSdMJAv4EXPJ4tQLnqsaojXrPcsDpK",
+      "usdcVault": "9jpSrg3NzvVmZPrhXKhdFya57Q8aQqoK26MDknhTADAM"
+    }
+  }
+}

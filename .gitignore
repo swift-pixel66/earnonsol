@@ -12,3 +12,4 @@ coverage/
 .build/
 .venv/
 __pycache__/
+.keys/

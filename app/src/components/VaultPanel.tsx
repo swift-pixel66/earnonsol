@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import { VaultConfig } from "../lib/registry";
-import { short, usdcBalance, shareBalance } from "../lib/chain";
-import { fetchPoolStats, PoolStats, fmtUsd, fmtAmount } from "../lib/pool";
+import { short, usdcBalance, shareBalance, selectedNetwork } from "../lib/chain";
+import { getAllPoolInfo, PoolInfo, fmtCompactUsd, fmtNum } from "../lib/raydium";
+import { DEVNET } from "../lib/devnet";
 import {
   buildDepositTx,
   buildWithdrawTx,
@@ -15,7 +16,7 @@ type Tab = "deposit" | "withdraw";
 export function VaultPanel({ vault }: { vault: VaultConfig }) {
   const { connection } = useConnection();
   const { publicKey, sendTransaction } = useWallet();
-  const [pool, setPool] = useState<PoolStats | null>(null);
+  const [pool, setPool] = useState<PoolInfo | null>(null);
   const [loadingPool, setLoadingPool] = useState(true);
   const [tab, setTab] = useState<Tab>("deposit");
   const [amount, setAmount] = useState("");
@@ -33,31 +34,55 @@ export function VaultPanel({ vault }: { vault: VaultConfig }) {
       setLoadingPool(false);
       return;
     }
-    fetchPoolStats(connection, vault).then((s) => {
+    if (selectedNetwork() === "devnet") {
+      // Devnet: no external pool — show the vault's own USDC reserve as depth.
+      const d = DEVNET.vaults[vault.id];
+      if (!d) { setLoadingPool(false); return; }
+      connection
+        .getTokenAccountBalance(new PublicKey(d.usdcVault))
+        .then((b) => {
+          const usdc = b.value.uiAmount ?? 0;
+          if (live) {
+            setPool({ tvl: usdc, apr: 0, fees24h: 0, volume24h: 0, reserveAsset: 0, reserveUsdc: usdc, price: 0 });
+            setLoadingPool(false);
+          }
+        })
+        .catch(() => live && setLoadingPool(false));
+      return () => { live = false; };
+    }
+    getAllPoolInfo().then((all) => {
       if (live) {
-        setPool(s);
+        setPool(all[vault.id] ?? null);
         setLoadingPool(false);
       }
     });
     return () => {
       live = false;
     };
-  }, [vault.id, connection]);
+  }, [vault.id]);
 
-  // wallet balances
-  useEffect(() => {
+  const isDev = selectedNetwork() === "devnet";
+  const devVault = DEVNET.vaults[vault.id];
+  const activeShareMint = isDev ? devVault?.shareMint : vault.shareMint;
+
+  async function refreshBalances() {
     if (!publicKey) {
       setUsdc(null);
       setShares(null);
       return;
     }
     usdcBalance(connection, publicKey).then(setUsdc);
-    if (vault.shareMint)
-      shareBalance(connection, publicKey, vault.shareMint).then(setShares);
+    if (activeShareMint)
+      shareBalance(connection, publicKey, activeShareMint).then(setShares);
+  }
+
+  // wallet balances
+  useEffect(() => {
+    refreshBalances();
   }, [publicKey, connection, vault.id]);
 
   const estValue =
-    shares != null && pool?.depthUsd != null ? shares * 0 : null; // shares priced via program later
+    shares != null && pool != null ? shares * 0 : null; // shares priced via program later
   const walletShort = publicKey ? short(publicKey.toBase58(), 4) : null;
 
   async function submit() {
@@ -82,13 +107,33 @@ export function VaultPanel({ vault }: { vault: VaultConfig }) {
               shareAmount: BigInt(Math.round(value * 1e6)),
             });
       const sig = await sendTransaction(tx, connection);
-      setStatus(`Submitted: ${sig}`);
+      await connection.confirmTransaction(sig, "confirmed");
+      setStatus(`✅ ${tab === "deposit" ? "Deposited" : "Withdrew"} · ${sig.slice(0, 8)}…`);
+      setAmount("");
+      await refreshBalances();
     } catch (e) {
-      if (e instanceof ProgramNotWiredError)
-        setStatus(
-          "⚙️ UI ready — this action runs once the rebuilt vault program is deployed to Devnet."
-        );
-      else setStatus(`Error: ${(e as Error).message}`);
+      const msg = (e as Error).message || String(e);
+      if (msg.includes("only live on Devnet"))
+        setStatus("These vaults only accept deposits/withdrawals on Devnet — open with ?env=dev.");
+      else setStatus(`Error: ${msg}`);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function faucet() {
+    if (!publicKey) return setStatus("Connect a wallet first.");
+    setBusy(true);
+    setStatus("Requesting test USDC…");
+    try {
+      const r = await fetch(`http://127.0.0.1:8899/faucet?to=${publicKey.toBase58()}`);
+      const j = await r.json();
+      if (j.ok) {
+        setStatus("✅ Received 1000 test USDC");
+        await refreshBalances();
+      } else setStatus(`Faucet error: ${j.error}`);
+    } catch {
+      setStatus("Faucet not running. Start the local faucet server first (see README).");
     } finally {
       setBusy(false);
     }
@@ -122,14 +167,21 @@ export function VaultPanel({ vault }: { vault: VaultConfig }) {
           <div className="soon-note">This vault is coming soon.</div>
         ) : (
           <>
-            <div className="pool-depth">
-              <span className="muted">Underlying liquidity pool</span>
-              <strong className="depth">
-                {loadingPool ? "…" : fmtUsd(pool?.depthUsd ?? null, { compact: true })}
-              </strong>
-              <span className="muted small">
-                Pool price estimate · total depth of the pool this vault provides liquidity to.
-              </span>
+            <div className="pool-apr-row">
+              <div className="pool-depth">
+                <span className="muted">Underlying liquidity pool</span>
+                <strong className="depth">
+                  {loadingPool ? "…" : fmtCompactUsd(pool?.tvl)}
+                </strong>
+                <span className="muted small">
+                  Total depth of the pool this vault provides liquidity to.
+                </span>
+              </div>
+              <div className="pool-apr">
+                <span className="muted small">Pool fee APR</span>
+                <strong>{loadingPool ? "…" : (pool?.apr ?? 0).toFixed(2)}<small>%</small></strong>
+                <span className="muted small">24h fees {loadingPool ? "…" : fmtCompactUsd(pool?.fees24h)}</span>
+              </div>
             </div>
 
             <div className="reserves">
@@ -137,14 +189,14 @@ export function VaultPanel({ vault }: { vault: VaultConfig }) {
                 <img src={vault.icon} width={26} height={26} alt="" />
                 <div>
                   <span className="muted small">{vault.symbol}</span>
-                  <strong>{loadingPool ? "…" : fmtAmount(pool?.assetReserve ?? null)}</strong>
+                  <strong>{loadingPool ? "…" : fmtNum(pool?.reserveAsset)}</strong>
                 </div>
               </div>
               <div>
                 <img src="/tokens/usdc.svg" width={26} height={26} alt="" />
                 <div>
                   <span className="muted small">USDC</span>
-                  <strong>{loadingPool ? "…" : fmtAmount(pool?.usdcReserve ?? null, 4)}</strong>
+                  <strong>{loadingPool ? "…" : fmtNum(pool?.reserveUsdc, 4)}</strong>
                 </div>
               </div>
             </div>
@@ -173,7 +225,7 @@ export function VaultPanel({ vault }: { vault: VaultConfig }) {
           <div>
             <span className="muted small">Estimated value</span>
             <strong className="est">
-              {publicKey ? (estValue == null ? "$0" : fmtUsd(estValue)) : "—"}
+              {publicKey ? (estValue == null ? "$0" : fmtCompactUsd(estValue)) : "—"}
             </strong>
           </div>
           <div className="right">
@@ -217,6 +269,12 @@ export function VaultPanel({ vault }: { vault: VaultConfig }) {
         <button className="btn-primary block" onClick={submit} disabled={busy || vault.comingSoon}>
           {busy ? "Confirm in wallet…" : tab === "deposit" ? "→ Deposit USDC" : "→ Withdraw"}
         </button>
+
+        {isDev && (
+          <button className="faucet-btn" onClick={faucet} disabled={busy || !publicKey}>
+            {publicKey ? "🚰 Get 1000 test USDC" : "Connect a wallet to get test USDC"}
+          </button>
+        )}
 
         {status && <div className="status">{status}</div>}
       </section>

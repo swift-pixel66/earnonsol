@@ -5,6 +5,13 @@ import {
   TOKEN_2022_PROGRAM_ID,
 } from "@solana/spl-token";
 import { USDC_MINT } from "./registry";
+import { DEVNET } from "./devnet";
+
+// USDC mint for the active network: real USDC on mainnet, the faucet test mint
+// on devnet (where deposits/withdrawals actually run).
+export function activeUsdcMint(): string {
+  return selectedNetwork() === "devnet" ? DEVNET.usdcMint : USDC_MINT;
+}
 
 // Network selection: ?env=dev -> devnet, otherwise mainnet reference reads.
 export function selectedNetwork(): "mainnet-beta" | "devnet" {
@@ -59,7 +66,7 @@ export async function tokenUiBalance(
 }
 
 export async function usdcBalance(conn: Connection, owner: PublicKey) {
-  return tokenUiBalance(conn, owner, new PublicKey(USDC_MINT), TOKEN_PROGRAM_ID);
+  return tokenUiBalance(conn, owner, new PublicKey(activeUsdcMint()), TOKEN_PROGRAM_ID);
 }
 
 export async function shareBalance(

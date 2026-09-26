@@ -1,8 +1,7 @@
-import { useRoute } from "./router";
-import { Home } from "./views/Home";
 import { VaultApp } from "./views/VaultApp";
 
+// The landing page is served statically at "/". This React app is the vault
+// app, mounted at "/app/".
 export default function App() {
-  const route = useRoute();
-  return route.startsWith("/app") ? <VaultApp /> : <Home />;
+  return <VaultApp />;
 }

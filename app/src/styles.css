@@ -207,3 +207,23 @@ a { color: inherit; }
   .home-hero { grid-template-columns: 1fr; gap: 20px; align-items: start; }
   .home-metrics, .how-steps { grid-template-columns: 1fr; }
 }
+
+/* home vault card: APR + stats (match original) */
+.hv-apr { margin: 14px 0 14px; display: flex; flex-direction: column; gap: 2px; }
+.hv-apr .apr { font-family: var(--heading); font-size: 30px; color: var(--green); line-height: 1; }
+.hv-apr .apr small { font-size: 16px; margin-left: 2px; }
+.hv-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0 0 16px; }
+.hv-stats dt { margin-bottom: 2px; }
+.hv-stats dd { margin: 0; font-family: var(--mono); font-size: 14px; }
+.home-metrics { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 900px){ .home-metrics { grid-template-columns: 1fr 1fr; } }
+
+/* app detail: pool depth + APR side by side */
+.pool-apr-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 22px; }
+.pool-apr { text-align: right; display: flex; flex-direction: column; gap: 2px; }
+.pool-apr strong { font-family: var(--heading); font-size: 26px; color: var(--green); }
+.pool-apr strong small { font-size: 15px; }
+
+/* faucet button (devnet only) */
+.faucet-btn { width: 100%; margin-top: 10px; padding: 12px; border-radius: 12px; border: 1px dashed var(--violet); background: var(--violet-soft); color: var(--violet-dark); font-weight: 600; cursor: pointer; font-size: 14px; }
+.faucet-btn:disabled { opacity: .55; cursor: not-allowed; }
