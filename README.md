@@ -89,8 +89,10 @@ liquidity / 24h volume, and the same **Deposit USDC** liquidity flow.
 | Anthropic | PreStocks | `Pren1FvFX6J3E4kXhJuCiAD5aDmGEb7qJRncwA8Lkhw` |
 | Figure AI | PreStocks | `PreZad18qfPtbxNpMtMuAuX2zVpvkEU8DnJx56faCWd` |
 
-Live stats come from DexScreener; deposits run against the same Devnet EARN vault
-program (a Meteora DAMM v2 vault is set up for `tkalshi` end-to-end).
+Live stats come from DexScreener — real **Pool fee APR** is computed from live 24h
+volume and each pool's real base fee (read from the Meteora DLMM pools). Deposits run
+against the same Devnet EARN vault program; a Meteora DAMM v2 vault is set up
+end-to-end for **all four** pre-IPO markets.
 
 ### Meteora DBC exploration (bonus)
 

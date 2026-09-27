@@ -21,6 +21,7 @@ export interface VaultConfig {
   preipo?: boolean; // pre-IPO tokenized-equity market (real Tessera / PreStocks token)
   issuer?: string; // "Tessera" | "PreStocks"
   pairAddress?: string; // DexScreener pair for live stats (pre-IPO tokens trade on Meteora)
+  feeRate?: number; // pool base fee (decimal) for real fee-APR computation
   // on-chain addresses (mainnet reference deployment)
   vaultState?: string;
   assetMint?: string; // xStock (Token-2022) or community token
@@ -117,25 +118,25 @@ export const VAULTS: VaultConfig[] = [
     id: "tkalshi", symbol: "tKalshi", name: "Kalshi", short: "KALSHI", icon: "/tokens/tkalshi.png",
     kind: "token", preipo: true, issuer: "Tessera", usdcMint: USDC_MINT,
     assetMint: "TKLSidmLVt3cqGaaodG8tyRzoANfQwoh67AccjmubeZ",
-    pairAddress: "CGYxcqLiJEoYapZrU7uVGBGfEE15pXDV4mB9AQ8Fsuff",
+    pairAddress: "CGYxcqLiJEoYapZrU7uVGBGfEE15pXDV4mB9AQ8Fsuff", feeRate: 0.0001,
   },
   {
     id: "topenai", symbol: "tOpenAI", name: "OpenAI", short: "OPENAI", icon: "/tokens/topenai.png",
     kind: "token", preipo: true, issuer: "Tessera", usdcMint: USDC_MINT,
     assetMint: "oPAiAikWTaFj9RYoRFD35ccfwhnMcB3ThgBZRHSkjTZ",
-    pairAddress: "2ZWxT3niYjyudmDMDVar9ajNE42RkwYdzZBh6TiMuKQY",
+    pairAddress: "2ZWxT3niYjyudmDMDVar9ajNE42RkwYdzZBh6TiMuKQY", feeRate: 0.0001,
   },
   {
     id: "anthro", symbol: "ANTHROPIC", name: "Anthropic", short: "ANTHROPIC", icon: "/tokens/anthro.png",
     kind: "token", preipo: true, issuer: "PreStocks", usdcMint: USDC_MINT,
     assetMint: "Pren1FvFX6J3E4kXhJuCiAD5aDmGEb7qJRncwA8Lkhw",
-    pairAddress: "EZyszDEx1LZDt7TsSFV8xdPi49sDKC3mdfv2MVMEQLtU",
+    pairAddress: "EZyszDEx1LZDt7TsSFV8xdPi49sDKC3mdfv2MVMEQLtU", feeRate: 0.01,
   },
   {
     id: "figure", symbol: "FIGUREAI", name: "Figure AI", short: "FIGURE", icon: "/tokens/figure.png",
     kind: "token", preipo: true, issuer: "PreStocks", usdcMint: USDC_MINT,
     assetMint: "PreZad18qfPtbxNpMtMuAuX2zVpvkEU8DnJx56faCWd",
-    pairAddress: "5fLS1XqZshXkPPYyZcnzWK2RRDkcHuXf88wpFoXCJXKG",
+    pairAddress: "5fLS1XqZshXkPPYyZcnzWK2RRDkcHuXf88wpFoXCJXKG", feeRate: 0.02,
   },
 ];
 

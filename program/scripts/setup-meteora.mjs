@@ -35,7 +35,9 @@ const VS = Buffer.from("vault"), SS = Buffer.from("share");
 const EVENT_AUTH = PublicKey.findProgramAddressSync([Buffer.from("__event_authority")], CP)[0];
 
 const ASSETS = [
-  { id: "tkalshi", symbol: "tKalshi", name: "Kalshi" },
+  { id: "topenai", symbol: "tOpenAI", name: "OpenAI" },
+  { id: "anthro", symbol: "ANTHROPIC", name: "Anthropic" },
+  { id: "figure", symbol: "FIGUREAI", name: "Figure AI" },
 ];
 
 async function setupOne(a) {

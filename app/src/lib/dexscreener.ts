@@ -1,11 +1,9 @@
 import { PoolInfo } from "./raydium";
 
-// Live stats for the pre-IPO tokens (real Tessera / PreStocks tokens on Meteora),
-// sourced from DexScreener. APR / 24h fees are estimated from real 24h volume at
-// the pool fee tier (these markets don't expose a fee-APR feed).
-const FEE_RATE = 0.02; // ~2% Meteora pool fee (estimate for fee/APR derivation)
-
-export async function fetchPreIpoInfo(pairAddress: string): Promise<PoolInfo | null> {
+// Live stats for the pre-IPO tokens (real Tessera / PreStocks tokens on Meteora
+// DLMM), sourced from DexScreener. Fee APR is computed from real 24h volume and
+// the pool's real base fee: fees = volume * feeRate, APR = fees/TVL * 365.
+export async function fetchPreIpoInfo(pairAddress: string, feeRate = 0.0001): Promise<PoolInfo | null> {
   try {
     const r = await fetch(`https://api.dexscreener.com/latest/dex/pairs/solana/${pairAddress}`);
     const j = await r.json();
@@ -14,12 +12,9 @@ export async function fetchPreIpoInfo(pairAddress: string): Promise<PoolInfo | n
     const tvl = Number(p.liquidity?.usd) || 0;
     const vol24 = Number(p.volume?.h24) || 0;
     const price = Number(p.priceUsd) || 0;
-    const fees24h = vol24 * FEE_RATE;
+    const fees24h = vol24 * feeRate;
     const apr = tvl > 0 ? (fees24h / tvl) * 365 * 100 : 0;
-    return {
-      tvl, apr, fees24h, volume24h: vol24,
-      reserveAsset: 0, reserveUsdc: 0, price,
-    };
+    return { tvl, apr, fees24h, volume24h: vol24, reserveAsset: 0, reserveUsdc: 0, price };
   } catch {
     return null;
   }

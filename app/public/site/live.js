@@ -55,19 +55,21 @@
     .catch(function () { /* keep static values on failure */ });
 })();
 
-// Pre-IPO cards: refresh live price / liquidity / 24h volume from DexScreener.
+// Pre-IPO cards: real fee APR from live 24h volume x pool fee / liquidity.
 (function () {
   function usd(n){ if(n==null) return "—"; if(n>=1e6) return "$"+(n/1e6).toFixed(2)+"M"; if(n>=1e3) return "$"+(n/1e3).toFixed(2)+"K"; return "$"+n.toFixed(2); }
   document.querySelectorAll("[data-preipo][data-pair]").forEach(function(card){
     var pair = card.getAttribute("data-pair");
+    var fee = Number(card.getAttribute("data-fee")) || 0.0001;
     fetch("https://api.dexscreener.com/latest/dex/pairs/solana/" + pair)
       .then(function(r){ return r.json(); })
       .then(function(j){
         var p = (j && j.pairs && j.pairs[0]) || (j && j.pair); if(!p) return;
-        var price = Number(p.priceUsd)||0, liq=(p.liquidity&&p.liquidity.usd)||0, vol=(p.volume&&p.volume.h24)||0;
-        var set=function(f,v){ var el=card.querySelector('[data-field="'+f+'"]'); if(el) el.textContent=v; };
-        set("price", "$"+price.toLocaleString(undefined,{maximumFractionDigits:2}));
-        set("liq", usd(liq)); set("vol", usd(vol));
+        var liq=(p.liquidity&&p.liquidity.usd)||0, vol=(p.volume&&p.volume.h24)||0;
+        var fees=vol*fee, apr=liq>0?(fees/liq)*365*100:0;
+        var set=function(f,v){ var el=card.querySelector('[data-field="'+f+'"]'); if(el) el.innerHTML=v; };
+        set("apr", apr.toFixed(2)+"<small>%</small>");
+        set("liq", usd(liq)); set("fees", usd(fees));
       }).catch(function(){});
   });
 })();

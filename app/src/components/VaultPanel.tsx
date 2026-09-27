@@ -37,7 +37,7 @@ export function VaultPanel({ vault }: { vault: VaultConfig }) {
     }
     if (vault.preipo && vault.pairAddress) {
       // Pre-IPO tokens are real mainnet markets — show live stats from DexScreener.
-      fetchPreIpoInfo(vault.pairAddress).then((s) => {
+      fetchPreIpoInfo(vault.pairAddress, vault.feeRate).then((s) => {
         if (live) { setPool(s); setLoadingPool(false); }
       });
       return () => { live = false; };
@@ -186,19 +186,11 @@ export function VaultPanel({ vault }: { vault: VaultConfig }) {
                   Total depth of the pool this vault provides liquidity to.
                 </span>
               </div>
-              {vault.preipo ? (
-                <div className="pool-apr">
-                  <span className="muted small">Live price</span>
-                  <strong>${loadingPool ? "…" : (pool?.price ?? 0).toLocaleString(undefined, { maximumFractionDigits: 2 })}</strong>
-                  <span className="muted small">{vault.issuer}</span>
-                </div>
-              ) : (
-                <div className="pool-apr">
-                  <span className="muted small">Pool fee APR</span>
-                  <strong>{loadingPool ? "…" : (pool?.apr ?? 0).toFixed(2)}<small>%</small></strong>
-                  <span className="muted small">24h fees {loadingPool ? "…" : fmtCompactUsd(pool?.fees24h)}</span>
-                </div>
-              )}
+              <div className="pool-apr">
+                <span className="muted small">Pool fee APR</span>
+                <strong>{loadingPool ? "…" : (pool?.apr ?? 0).toFixed(2)}<small>%</small></strong>
+                <span className="muted small">24h fees {loadingPool ? "…" : fmtCompactUsd(pool?.fees24h)}</span>
+              </div>
             </div>
 
             {vault.preipo ? (
@@ -206,15 +198,15 @@ export function VaultPanel({ vault }: { vault: VaultConfig }) {
                 <div>
                   <img src={vault.icon} width={26} height={26} alt="" />
                   <div>
-                    <span className="muted small">{vault.symbol} price</span>
-                    <strong>{loadingPool ? "…" : "$" + (pool?.price ?? 0).toLocaleString(undefined, { maximumFractionDigits: 2 })}</strong>
+                    <span className="muted small">24h volume</span>
+                    <strong>{loadingPool ? "…" : fmtCompactUsd(pool?.volume24h)}</strong>
                   </div>
                 </div>
                 <div>
                   <img src="/tokens/usdc.svg" width={26} height={26} alt="" />
                   <div>
-                    <span className="muted small">24h volume</span>
-                    <strong>{loadingPool ? "…" : fmtCompactUsd(pool?.volume24h)}</strong>
+                    <span className="muted small">Issuer</span>
+                    <strong style={{ fontSize: 15 }}>{vault.issuer}</strong>
                   </div>
                 </div>
               </div>
