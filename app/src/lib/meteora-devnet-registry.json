@@ -23,6 +23,26 @@
       "tokenBVault": "CYmrGPLa7pFHc1at5iaC1vut78zXqt1hiwzvZBkGJaNg",
       "poolAuthority": "HLnpSz9h2S4hiLQ43rnSD9XkcUThA7B8hQMKmDaiTLcC",
       "eventAuthority": "3rmHSu74h1ZcmAisVcWerTCiRDQbUrBKmcwptYGjHfet"
+    },
+    "tkalshi": {
+      "id": "tkalshi",
+      "symbol": "tKalshi",
+      "name": "Kalshi",
+      "aFirst": true,
+      "vault": "9fpS5aNrocjjszHjDiWwxBLzSBfdzjxwWXDiVzD4rvCd",
+      "shareMint": "7S4oLZ9vz68fh3gARTJoTxJ6vaqXjej2gQoT7uECJmXo",
+      "assetMint": "Dioec9vBMzeryU8NDAcWF9UyQZLK3T9EkbrzCsicrXt8",
+      "assetVault": "5DQHsSDyLoDDiyhFXY3z39QvQHvSwrkUBziWeBMzMfS9",
+      "usdcVault": "FpxgmHjsuZ81neCnEF1fSoz8TNiPwiv3NuTXQTU6frhx",
+      "pool": "9VusNM4wH6XfpXf9LxjRwRhnSz5JgWkAp1hiAVnbKyfP",
+      "position": "FqwK8UDcsBwh6MVY4ggYzumMwbEZ6FngECGpiTw4yvkE",
+      "positionNftAccount": "NhmXyxu5feqCyRTUEfcY7SW7FpK42FGaPhETpCuifgC",
+      "tokenAMint": "Dioec9vBMzeryU8NDAcWF9UyQZLK3T9EkbrzCsicrXt8",
+      "tokenBMint": "EgFLnzxzWLUrSFoDfY2jezmLAHqH2aakxvGRY8GsnY8j",
+      "tokenAVault": "7yEex3rXLigWwEXpw2ZMNFNdKYcz2zA4ZcCR6jBn9TCT",
+      "tokenBVault": "7vEni8Z9C7ajjmb7i9VdzNos5rLr4yQUxTYirKXs4x5Y",
+      "poolAuthority": "HLnpSz9h2S4hiLQ43rnSD9XkcUThA7B8hQMKmDaiTLcC",
+      "eventAuthority": "3rmHSu74h1ZcmAisVcWerTCiRDQbUrBKmcwptYGjHfet"
     }
   }
 }

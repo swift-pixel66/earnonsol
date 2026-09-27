@@ -75,40 +75,29 @@ The position NFT is owned by the vault PDA, so the program signs the Meteora CPI
 with its seeds. Share amounts are kept at token scale to stay within `u64` while
 Meteora liquidity is Q64.64.
 
-## Meteora DBC — equity launchpad (hackathon track)
+## Pre-IPO market — real tokenized pre-IPO equities
 
-Newly tokenized and pre-IPO equities (Tessera T-stocks, PreStock) are thin and
-have no price. EARN uses **Meteora's Dynamic Bonding Curve (DBC)** as a *price-
-discovery launchpad tuned for equities* — not memecoins — that graduates straight
-into a Meteora DAMM v2 pool, which the EARN vault then market-makes. One primitive,
-full lifecycle: **launch → price discovery → graduate → auto-LP.**
+Beyond public-company xStocks, EARN also covers **tokenized pre-IPO equities** —
+real on-chain tokens issued by **Tessera** and **PreStocks** that trade on Meteora.
+The app lists them as a *Pre-IPO Market* alongside the IPO vaults, with live price /
+liquidity / 24h volume, and the same **Deposit USDC** liquidity flow.
 
-**What makes the DBC config equity-tuned** ([`program/scripts/dbc-launch.mjs`](program/scripts/dbc-launch.mjs)):
-
-- **USDC-quoted**, not SOL — equities are priced in dollars, so the curve, fees and
-  market caps are all denominated in USDC.
-- **Anti-snipe fee decay** — a linear fee scheduler starts at **3%** and decays to
-  **1%**, dampening the launch-spike that wrecks thin markets, then normalizing.
-- **Dynamic volatility fee** — an extra surcharge during volatile windows, suited
-  to illiquid equity pairs.
-- **Locked LP on graduation** — 100% permanent-locked LP when it migrates, so the
-  graduated market can't be rugged.
-- **Graduates to DAMM v2** at a **$50k** market cap, then the EARN vault provides
-  and manages that liquidity.
-
-**Launched & verified on Devnet** (config `AvUQpyyo3mAgicFwY2mh3AkEBDtvUbeFwAGv5sWfyyof`,
-DBC program `dbcij3LWUppWqq96dh6gJWwBifmcGfLSB5D4DuSMaqN`):
-
-| Token | Asset | Base mint |
+| Market | Issuer | Mint |
 | --- | --- | --- |
-| TKALSHI | Tessera Kalshi (T-stock) | `EMrDG1YBVozLT2k5CKV2BqWVuPhywmhxX18xmvTqHa18` |
-| TOPENAI | Tessera OpenAI (T-stock) | `E9CKxTFVmrNfEbAM55XDRGE2cQR4W4qzhcXkLfVYPWwz` |
-| ANTHRO  | Anthropic (PreStock, pre-IPO) | `Ef69GJC98ZBxithE7nBHTJ2YJMbnXqSwyPTE9ogvYEvq` |
-| FIGURE  | Figure AI (PreStock, pre-IPO) | `BjQ2jtuzPzc7Z2uCnfUf1UkdGMoBWPwzDehGDKpvSiGm` |
+| Kalshi (tKalshi) | Tessera | `TKLSidmLVt3cqGaaodG8tyRzoANfQwoh67AccjmubeZ` |
+| OpenAI (tOpenAI) | Tessera | `oPAiAikWTaFj9RYoRFD35ccfwhnMcB3ThgBZRHSkjTZ` |
+| Anthropic | PreStocks | `Pren1FvFX6J3E4kXhJuCiAD5aDmGEb7qJRncwA8Lkhw` |
+| Figure AI | PreStocks | `PreZad18qfPtbxNpMtMuAuX2zVpvkEU8DnJx56faCWd` |
 
-Config creation, all four launches, and a live on-curve **buy** (price discovery)
-are verified end-to-end — [`program/scripts/dbc-launch.mjs`](program/scripts/dbc-launch.mjs)
-+ [`dbc-buy.mjs`](program/scripts/dbc-buy.mjs).
+Live stats come from DexScreener; deposits run against the same Devnet EARN vault
+program (a Meteora DAMM v2 vault is set up for `tkalshi` end-to-end).
+
+### Meteora DBC exploration (bonus)
+
+`program/scripts/dbc-launch.mjs` also demonstrates an *equity-tuned* Meteora
+Dynamic Bonding Curve config (USDC-quoted, 3%→1% anti-snipe fee decay, dynamic fee,
+locked LP, graduation to DAMM v2) — a price-discovery launch path for equities that
+aren't tokenized yet. Config + launches + an on-curve buy are verified on Devnet.
 
 ## Tech stack
 

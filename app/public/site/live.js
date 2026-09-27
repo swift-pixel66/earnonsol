@@ -54,3 +54,20 @@
     })
     .catch(function () { /* keep static values on failure */ });
 })();
+
+// Pre-IPO cards: refresh live price / liquidity / 24h volume from DexScreener.
+(function () {
+  function usd(n){ if(n==null) return "—"; if(n>=1e6) return "$"+(n/1e6).toFixed(2)+"M"; if(n>=1e3) return "$"+(n/1e3).toFixed(2)+"K"; return "$"+n.toFixed(2); }
+  document.querySelectorAll("[data-preipo][data-pair]").forEach(function(card){
+    var pair = card.getAttribute("data-pair");
+    fetch("https://api.dexscreener.com/latest/dex/pairs/solana/" + pair)
+      .then(function(r){ return r.json(); })
+      .then(function(j){
+        var p = (j && j.pairs && j.pairs[0]) || (j && j.pair); if(!p) return;
+        var price = Number(p.priceUsd)||0, liq=(p.liquidity&&p.liquidity.usd)||0, vol=(p.volume&&p.volume.h24)||0;
+        var set=function(f,v){ var el=card.querySelector('[data-field="'+f+'"]'); if(el) el.textContent=v; };
+        set("price", "$"+price.toLocaleString(undefined,{maximumFractionDigits:2}));
+        set("liq", usd(liq)); set("vol", usd(vol));
+      }).catch(function(){});
+  });
+})();

@@ -18,7 +18,9 @@ export interface VaultConfig {
   kind: VaultKind;
   quote?: string; // quote asset label (default USDC)
   comingSoon?: boolean;
-  preipo?: boolean; // pre-IPO market launched on Meteora DBC (buy on bonding curve)
+  preipo?: boolean; // pre-IPO tokenized-equity market (real Tessera / PreStocks token)
+  issuer?: string; // "Tessera" | "PreStocks"
+  pairAddress?: string; // DexScreener pair for live stats (pre-IPO tokens trade on Meteora)
   // on-chain addresses (mainnet reference deployment)
   vaultState?: string;
   assetMint?: string; // xStock (Token-2022) or community token
@@ -109,11 +111,32 @@ export const VAULTS: VaultConfig[] = [
     id: "alice-vidax", symbol: "ALICE", name: "Alice", short: "ALICE",
     icon: "/tokens/alice.png", kind: "token", quote: "VIDAx", comingSoon: true, usdcMint: USDC_MINT,
   },
-  // Pre-IPO markets launched on Meteora DBC (buy on the bonding curve).
-  { id: "tkalshi", symbol: "TKALSHI", name: "Tessera Kalshi", short: "TKALSHI", icon: "/tokens/tkalshi.png", kind: "token", preipo: true, usdcMint: USDC_MINT },
-  { id: "topenai", symbol: "TOPENAI", name: "Tessera OpenAI", short: "TOPENAI", icon: "/tokens/topenai.png", kind: "token", preipo: true, usdcMint: USDC_MINT },
-  { id: "anthro", symbol: "ANTHRO", name: "Anthropic", short: "ANTHRO", icon: "/tokens/anthro.png", kind: "token", preipo: true, usdcMint: USDC_MINT },
-  { id: "figure", symbol: "FIGURE", name: "Figure AI", short: "FIGURE", icon: "/tokens/figure.png", kind: "token", preipo: true, usdcMint: USDC_MINT },
+  // Pre-IPO tokenized equities — real on-chain tokens issued by Tessera & PreStocks,
+  // trading on Meteora. EARN provides USDC liquidity for them just like the xStock vaults.
+  {
+    id: "tkalshi", symbol: "tKalshi", name: "Kalshi", short: "KALSHI", icon: "/tokens/tkalshi.png",
+    kind: "token", preipo: true, issuer: "Tessera", usdcMint: USDC_MINT,
+    assetMint: "TKLSidmLVt3cqGaaodG8tyRzoANfQwoh67AccjmubeZ",
+    pairAddress: "CGYxcqLiJEoYapZrU7uVGBGfEE15pXDV4mB9AQ8Fsuff",
+  },
+  {
+    id: "topenai", symbol: "tOpenAI", name: "OpenAI", short: "OPENAI", icon: "/tokens/topenai.png",
+    kind: "token", preipo: true, issuer: "Tessera", usdcMint: USDC_MINT,
+    assetMint: "oPAiAikWTaFj9RYoRFD35ccfwhnMcB3ThgBZRHSkjTZ",
+    pairAddress: "2ZWxT3niYjyudmDMDVar9ajNE42RkwYdzZBh6TiMuKQY",
+  },
+  {
+    id: "anthro", symbol: "ANTHROPIC", name: "Anthropic", short: "ANTHROPIC", icon: "/tokens/anthro.png",
+    kind: "token", preipo: true, issuer: "PreStocks", usdcMint: USDC_MINT,
+    assetMint: "Pren1FvFX6J3E4kXhJuCiAD5aDmGEb7qJRncwA8Lkhw",
+    pairAddress: "EZyszDEx1LZDt7TsSFV8xdPi49sDKC3mdfv2MVMEQLtU",
+  },
+  {
+    id: "figure", symbol: "FIGUREAI", name: "Figure AI", short: "FIGURE", icon: "/tokens/figure.png",
+    kind: "token", preipo: true, issuer: "PreStocks", usdcMint: USDC_MINT,
+    assetMint: "PreZad18qfPtbxNpMtMuAuX2zVpvkEU8DnJx56faCWd",
+    pairAddress: "5fLS1XqZshXkPPYyZcnzWK2RRDkcHuXf88wpFoXCJXKG",
+  },
 ];
 
 export function getVault(id: string | null): VaultConfig | undefined {

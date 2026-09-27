@@ -35,7 +35,7 @@ const VS = Buffer.from("vault"), SS = Buffer.from("share");
 const EVENT_AUTH = PublicKey.findProgramAddressSync([Buffer.from("__event_authority")], CP)[0];
 
 const ASSETS = [
-  { id: "nvda", symbol: "NVDAx", name: "NVIDIA" },
+  { id: "tkalshi", symbol: "tKalshi", name: "Kalshi" },
 ];
 
 async function setupOne(a) {
@@ -106,7 +106,8 @@ async function setupOne(a) {
 
 async function main() {
   console.log("payer", payer.publicKey.toBase58(), (await conn.getBalance(payer.publicKey)) / 1e9, "SOL");
-  const out = { network: "devnet", programId: PROG.toBase58(), cpAmm: CP.toBase58(), usdcMint: USDC.toBase58(), vaults: {} };
+  let out = { network: "devnet", programId: PROG.toBase58(), cpAmm: CP.toBase58(), usdcMint: USDC.toBase58(), vaults: {} };
+  try { out = JSON.parse(fs.readFileSync("meteora-devnet-registry.json")); } catch {}
   for (const a of ASSETS) {
     const v = await setupOne(a);
     out.vaults[a.id] = v;

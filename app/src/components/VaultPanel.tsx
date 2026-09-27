@@ -4,6 +4,7 @@ import { PublicKey } from "@solana/web3.js";
 import { VaultConfig } from "../lib/registry";
 import { short, usdcBalance, shareBalance, selectedNetwork } from "../lib/chain";
 import { getAllPoolInfo, PoolInfo, fmtCompactUsd, fmtNum } from "../lib/raydium";
+import { fetchPreIpoInfo } from "../lib/dexscreener";
 import { meteoraVaultFor } from "../lib/vaultClient";
 import {
   buildDepositTx,
@@ -33,6 +34,13 @@ export function VaultPanel({ vault }: { vault: VaultConfig }) {
     if (vault.comingSoon) {
       setLoadingPool(false);
       return;
+    }
+    if (vault.preipo && vault.pairAddress) {
+      // Pre-IPO tokens are real mainnet markets — show live stats from DexScreener.
+      fetchPreIpoInfo(vault.pairAddress).then((s) => {
+        if (live) { setPool(s); setLoadingPool(false); }
+      });
+      return () => { live = false; };
     }
     if (selectedNetwork() === "devnet") {
       // Devnet: no external pool — show the vault's own USDC reserve as depth.
@@ -147,7 +155,7 @@ export function VaultPanel({ vault }: { vault: VaultConfig }) {
       {/* LEFT — vault / pool card */}
       <section className="card vault-card">
         <div className="card-head">
-          <span className="card-label">{vault.short} VAULT</span>
+          <span className="card-label">{vault.short} {vault.preipo ? "PRE-IPO MARKET" : "VAULT"}</span>
           <button className="icon-btn" aria-label="Refresh" onClick={() => {
             setLoadingPool(true);
             getAllPoolInfo().then((all) => { setPool(all[vault.id] ?? null); setLoadingPool(false); });
@@ -178,34 +186,61 @@ export function VaultPanel({ vault }: { vault: VaultConfig }) {
                   Total depth of the pool this vault provides liquidity to.
                 </span>
               </div>
-              <div className="pool-apr">
-                <span className="muted small">Pool fee APR</span>
-                <strong>{loadingPool ? "…" : (pool?.apr ?? 0).toFixed(2)}<small>%</small></strong>
-                <span className="muted small">24h fees {loadingPool ? "…" : fmtCompactUsd(pool?.fees24h)}</span>
-              </div>
+              {vault.preipo ? (
+                <div className="pool-apr">
+                  <span className="muted small">Live price</span>
+                  <strong>${loadingPool ? "…" : (pool?.price ?? 0).toLocaleString(undefined, { maximumFractionDigits: 2 })}</strong>
+                  <span className="muted small">{vault.issuer}</span>
+                </div>
+              ) : (
+                <div className="pool-apr">
+                  <span className="muted small">Pool fee APR</span>
+                  <strong>{loadingPool ? "…" : (pool?.apr ?? 0).toFixed(2)}<small>%</small></strong>
+                  <span className="muted small">24h fees {loadingPool ? "…" : fmtCompactUsd(pool?.fees24h)}</span>
+                </div>
+              )}
             </div>
 
-            <div className="reserves">
-              <div>
-                <img src={vault.icon} width={26} height={26} alt="" />
+            {vault.preipo ? (
+              <div className="reserves">
                 <div>
-                  <span className="muted small">{vault.symbol}</span>
-                  <strong>{loadingPool ? "…" : fmtNum(pool?.reserveAsset)}</strong>
+                  <img src={vault.icon} width={26} height={26} alt="" />
+                  <div>
+                    <span className="muted small">{vault.symbol} price</span>
+                    <strong>{loadingPool ? "…" : "$" + (pool?.price ?? 0).toLocaleString(undefined, { maximumFractionDigits: 2 })}</strong>
+                  </div>
+                </div>
+                <div>
+                  <img src="/tokens/usdc.svg" width={26} height={26} alt="" />
+                  <div>
+                    <span className="muted small">24h volume</span>
+                    <strong>{loadingPool ? "…" : fmtCompactUsd(pool?.volume24h)}</strong>
+                  </div>
                 </div>
               </div>
-              <div>
-                <img src="/tokens/usdc.svg" width={26} height={26} alt="" />
+            ) : (
+              <div className="reserves">
                 <div>
-                  <span className="muted small">USDC</span>
-                  <strong>{loadingPool ? "…" : fmtNum(pool?.reserveUsdc, 4)}</strong>
+                  <img src={vault.icon} width={26} height={26} alt="" />
+                  <div>
+                    <span className="muted small">{vault.symbol}</span>
+                    <strong>{loadingPool ? "…" : fmtNum(pool?.reserveAsset)}</strong>
+                  </div>
+                </div>
+                <div>
+                  <img src="/tokens/usdc.svg" width={26} height={26} alt="" />
+                  <div>
+                    <span className="muted small">USDC</span>
+                    <strong>{loadingPool ? "…" : fmtNum(pool?.reserveUsdc, 4)}</strong>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
 
             <div className="card-foot">
-              <span className="muted small">Good to know</span>
+              <span className="muted small">{vault.preipo ? `${vault.issuer} · pre-IPO` : "Good to know"}</span>
               <span className="mgmt">
-                Management <b>Allocating</b>
+                {vault.preipo ? <>Market <b>Live</b></> : <>Management <b>Allocating</b></>}
               </span>
             </div>
           </>

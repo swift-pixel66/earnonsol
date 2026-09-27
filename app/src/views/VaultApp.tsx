@@ -2,7 +2,6 @@ import { useMemo, useState, useEffect } from "react";
 import { VAULTS, getVault } from "../lib/registry";
 import { Header } from "../components/Header";
 import { VaultPanel } from "../components/VaultPanel";
-import { PreIpoPanel } from "../components/PreIpoPanel";
 
 function useVaultParam() {
   const initial =
@@ -57,7 +56,7 @@ export function VaultApp() {
           ))}
         </div>
 
-        {vault.preipo ? <PreIpoPanel vault={vault} /> : <VaultPanel vault={vault} />}
+        <VaultPanel vault={vault} />
 
         <footer className="transparency">
           <span className="tp-title">
