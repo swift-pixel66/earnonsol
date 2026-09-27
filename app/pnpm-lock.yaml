@@ -11,6 +11,9 @@ importers:
       '@meteora-ag/cp-amm-sdk':
         specifier: ^1.4.10
         version: 1.4.10(bufferutil@4.1.0)(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.3)(utf-8-validate@6.0.6)
+      '@meteora-ag/dynamic-bonding-curve-sdk':
+        specifier: ^1.5.13
+        version: 1.5.13(bufferutil@4.1.0)(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.3)(utf-8-validate@6.0.6)
       '@noble/hashes':
         specifier: ^2.4.0
         version: 2.4.0
@@ -432,6 +435,11 @@ packages:
 
   '@meteora-ag/cp-amm-sdk@1.4.10':
     resolution: {integrity: sha512-Y3UPjP91VWrj86hOr4kDmU1UXiESspy8YP6Z/4XtWD1eCVwUN0xMEzCvKXM2IRz5ECSj8alO2od1czhMhvcD8g==}
+
+  '@meteora-ag/dynamic-bonding-curve-sdk@1.5.13':
+    resolution: {integrity: sha512-2a/2qvs/lOFdtB39/jz5ttbv6Y+cCXCmcgDSqGsIdxY68bUv78JXM5e9asQ+hVGnUk+DzIbgSM2/VObZz2qwNw==}
+    peerDependencies:
+      typescript: ^5
 
   '@mobily/ts-belt@3.13.1':
     resolution: {integrity: sha512-K5KqIhPI/EoCTbA6CGbrenM9s41OouyK8A03fGJJcla/zKucsgLbz8HNbeseoLarRPgyWJsUyCYqFhI7t3Ra9Q==}
@@ -4759,6 +4767,20 @@ snapshots:
       - encoding
       - fastestsmallesttextencoderdecoder
       - typescript
+      - utf-8-validate
+
+  '@meteora-ag/dynamic-bonding-curve-sdk@1.5.13(bufferutil@4.1.0)(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.3)(utf-8-validate@6.0.6)':
+    dependencies:
+      '@coral-xyz/anchor': 0.31.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)
+      '@solana/spl-token': 0.4.15(@solana/web3.js@1.99.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6))(bufferutil@4.1.0)(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.3)(utf-8-validate@6.0.6)
+      '@solana/web3.js': 1.99.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)
+      bn.js: 5.2.5
+      decimal.js: 10.6.0
+      typescript: 5.9.3
+    transitivePeerDependencies:
+      - bufferutil
+      - encoding
+      - fastestsmallesttextencoderdecoder
       - utf-8-validate
 
   '@mobily/ts-belt@3.13.1': {}

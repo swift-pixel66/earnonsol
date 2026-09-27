@@ -1,0 +1,26 @@
+{
+  "TKALSHI": {
+    "pool": "GfxiGBD4fSWRr1soQ2VcmMhqAM2x9NmLmuCuVJAVjRLb",
+    "usdcRaised": 164.215461,
+    "feesQuote": 1.784539,
+    "curveProgress": 0.06138235601486643
+  },
+  "TOPENAI": {
+    "pool": "G3Sza6PqcjKMkrkNJeHMP3k5YPzfdTETVVAcMSJTMq8z",
+    "usdcRaised": 374.098655,
+    "feesQuote": 3.901345,
+    "curveProgress": 0.09226676634979097
+  },
+  "ANTHRO": {
+    "pool": "Fcf9JsdEompdBwfvrHqoZxTtkiKZbTG8Zey45HQoRsN2",
+    "usdcRaised": 148.492415,
+    "feesQuote": 1.507585,
+    "curveProgress": 0.038072344519145686
+  },
+  "FIGURE": {
+    "pool": "GihjwnhAuPqQ2VARUatCJpB3kcnWHJ8PftkLZVwkJnXJ",
+    "usdcRaised": 89.09838,
+    "feesQuote": 0.90162,
+    "curveProgress": 0.02308452840712252
+  }
+}

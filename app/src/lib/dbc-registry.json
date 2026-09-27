@@ -1,0 +1,29 @@
+{
+  "network": "devnet",
+  "dbcProgram": "dbcij3LWUppWqq96dh6gJWwBifmcGfLSB5D4DuSMaqN",
+  "config": "AvUQpyyo3mAgicFwY2mh3AkEBDtvUbeFwAGv5sWfyyof",
+  "quoteMint": "EgFLnzxzWLUrSFoDfY2jezmLAHqH2aakxvGRY8GsnY8j",
+  "pools": {
+    "TKALSHI": {
+      "name": "Tessera Kalshi",
+      "kind": "T-stock",
+      "baseMint": "EMrDG1YBVozLT2k5CKV2BqWVuPhywmhxX18xmvTqHa18",
+      "pool": "GfxiGBD4fSWRr1soQ2VcmMhqAM2x9NmLmuCuVJAVjRLb"
+    },
+    "TOPENAI": {
+      "name": "Tessera OpenAI",
+      "kind": "T-stock",
+      "baseMint": "E9CKxTFVmrNfEbAM55XDRGE2cQR4W4qzhcXkLfVYPWwz"
+    },
+    "ANTHRO": {
+      "name": "Anthropic (PreStock)",
+      "kind": "pre-IPO",
+      "baseMint": "Ef69GJC98ZBxithE7nBHTJ2YJMbnXqSwyPTE9ogvYEvq"
+    },
+    "FIGURE": {
+      "name": "Figure AI (PreStock)",
+      "kind": "pre-IPO",
+      "baseMint": "BjQ2jtuzPzc7Z2uCnfUf1UkdGMoBWPwzDehGDKpvSiGm"
+    }
+  }
+}

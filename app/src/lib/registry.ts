@@ -18,6 +18,7 @@ export interface VaultConfig {
   kind: VaultKind;
   quote?: string; // quote asset label (default USDC)
   comingSoon?: boolean;
+  preipo?: boolean; // pre-IPO market launched on Meteora DBC (buy on bonding curve)
   // on-chain addresses (mainnet reference deployment)
   vaultState?: string;
   assetMint?: string; // xStock (Token-2022) or community token
@@ -108,6 +109,11 @@ export const VAULTS: VaultConfig[] = [
     id: "alice-vidax", symbol: "ALICE", name: "Alice", short: "ALICE",
     icon: "/tokens/alice.png", kind: "token", quote: "VIDAx", comingSoon: true, usdcMint: USDC_MINT,
   },
+  // Pre-IPO markets launched on Meteora DBC (buy on the bonding curve).
+  { id: "tkalshi", symbol: "TKALSHI", name: "Tessera Kalshi", short: "TKALSHI", icon: "/tokens/tkalshi.png", kind: "token", preipo: true, usdcMint: USDC_MINT },
+  { id: "topenai", symbol: "TOPENAI", name: "Tessera OpenAI", short: "TOPENAI", icon: "/tokens/topenai.png", kind: "token", preipo: true, usdcMint: USDC_MINT },
+  { id: "anthro", symbol: "ANTHRO", name: "Anthropic", short: "ANTHRO", icon: "/tokens/anthro.png", kind: "token", preipo: true, usdcMint: USDC_MINT },
+  { id: "figure", symbol: "FIGURE", name: "Figure AI", short: "FIGURE", icon: "/tokens/figure.png", kind: "token", preipo: true, usdcMint: USDC_MINT },
 ];
 
 export function getVault(id: string | null): VaultConfig | undefined {
